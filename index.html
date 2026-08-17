@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>🏆 Camisetas | Proveedores</title>
-<meta content="Listado y comparador de vendedores de camisetas: precios por prenda, envíos y contacto." name="description"/>
+<meta content="Listado y comparador de vendedores mayoristas de camisetas: precios por prenda, envíos y contacto." name="description"/>
 <link href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;text y='.9em' font-size='90'&gt;%F0%9F%8E%BD&lt;/text&gt;&lt;/svg&gt;" rel="icon"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
@@ -182,12 +182,14 @@
 
   /* Contenido de los tutoriales: misma legibilidad que la sección Ming */
   #panel-guia .compare-card,
-  #panel-preguntas .compare-card{
+  #panel-preguntas .compare-card,
+  #panel-matchday .compare-card{
     font-family:'Inter',sans-serif;
     color:var(--text);
   }
   #panel-guia .compare-card > h2,
-  #panel-preguntas .compare-card > h2{
+  #panel-preguntas .compare-card > h2,
+  #panel-matchday .compare-card > h2{
     font-family:'Oswald',sans-serif;
     color:var(--text);
     font-size:26px;
@@ -195,7 +197,8 @@
     margin-bottom:18px;
   }
   #panel-guia .note,
-  #panel-preguntas .note{
+  #panel-preguntas .note,
+  #panel-matchday .note{
     font-family:'Inter',sans-serif;
     font-size:14px;
     color:var(--text);
@@ -207,7 +210,8 @@
     padding:16px 18px;
   }
   #panel-guia .note h3,
-  #panel-preguntas .note h3{
+  #panel-preguntas .note h3,
+  #panel-matchday .note h3{
     font-family:'Oswald',sans-serif;
     color:var(--text);
     font-size:18px;
@@ -217,16 +221,20 @@
   #panel-guia .note p,
   #panel-preguntas .note p,
   #panel-guia .note li,
-  #panel-preguntas .note li{
+  #panel-preguntas .note li,
+  #panel-matchday .note p,
+  #panel-matchday .note li{
     font-family:'Inter',sans-serif;
     color:var(--text);
     font-size:14px;
     line-height:1.7;
   }
   #panel-guia .note a,
-  #panel-preguntas .note a{color:var(--amber);}
+  #panel-preguntas .note a,
+  #panel-matchday .note a{color:var(--amber);}
   #panel-guia strong,
-  #panel-preguntas strong{color:var(--text);}
+  #panel-preguntas strong,
+  #panel-matchday strong{color:var(--text);}
   details summary{cursor:pointer; font-size:12px; color:var(--amber); font-family:'JetBrains Mono',monospace; margin-top:2px;}
   details[open] summary{margin-bottom:6px;}
 
@@ -236,7 +244,7 @@
   .quick-nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px;}
   .quick-nav a{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--text);text-decoration:none;font-size:12px;font-weight:600;transition:.15s ease;}
   .quick-nav a:hover{border-color:var(--amber);color:var(--amber);transform:translateY(-1px);}
-  #panel-guia .note,#panel-preguntas .note,#panel-ming .note{box-shadow:var(--shadow-sm);}
+  #panel-guia .note,#panel-preguntas .note,#panel-ming .note,#panel-matchday .note{box-shadow:var(--shadow-sm);}
   #panel-guia .note{position:relative;padding-left:20px;}
   #panel-guia .note h3{display:flex;align-items:center;gap:9px;}
   #panel-guia .note h3::before{content:'✓';display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;border-radius:50%;background:rgba(242,183,5,.13);border:1px solid rgba(242,183,5,.35);color:var(--amber);font-family:'JetBrains Mono',monospace;font-size:12px;flex:none;}
@@ -364,7 +372,7 @@ html{scroll-behavior:smooth;}
 .quick-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 15px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--text);text-decoration:none;font-weight:700;transition:transform .15s ease,background .15s ease,border-color .15s ease;}
 .quick-nav a:hover,.quick-nav a:focus-visible{transform:translateY(-1px);border-color:var(--amber);outline:none;}
 .tutorial-intro{font-size:1rem;line-height:1.7;color:var(--text);}
-#panel-guia .note,#panel-preguntas .note,#panel-ming .note{scroll-margin-top:90px;}
+#panel-guia .note,#panel-preguntas .note,#panel-ming .note,#panel-matchday .note{scroll-margin-top:90px;}
 .tutorial-step-actions{display:flex;justify-content:flex-end;margin-top:12px;}
 .tutorial-step-actions a{color:var(--text);text-decoration:none;font-weight:700;}
 .back-top{position:fixed;right:18px;bottom:18px;z-index:1000;display:none;width:46px;height:46px;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--text);font-size:20px;font-weight:700;box-shadow:var(--shadow-sm);cursor:pointer;}
@@ -372,10 +380,10 @@ html{scroll-behavior:smooth;}
 @media (max-width:700px){
   .quick-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
   .quick-nav a{width:100%;box-sizing:border-box;font-size:.92rem;padding:9px 8px;}
-  #panel-guia .compare-card,#panel-preguntas .compare-card,#panel-ming .compare-card{padding:15px!important;}
-  #panel-guia h2,#panel-preguntas h2,#panel-ming h2{font-size:1.35rem;}
-  #panel-guia h3,#panel-preguntas h3,#panel-ming h3{font-size:1.05rem;line-height:1.35;}
-  #panel-guia p,#panel-preguntas p,#panel-preguntas li,#panel-ming p,#panel-ming li{font-size:.96rem;line-height:1.65;}
+  #panel-guia .compare-card,#panel-preguntas .compare-card,#panel-ming .compare-card,#panel-matchday .compare-card{padding:15px!important;}
+  #panel-guia h2,#panel-preguntas h2,#panel-ming h2,#panel-matchday h2{font-size:1.35rem;}
+  #panel-guia h3,#panel-preguntas h3,#panel-ming h3,#panel-matchday h3{font-size:1.05rem;line-height:1.35;}
+  #panel-guia p,#panel-preguntas p,#panel-preguntas li,#panel-ming p,#panel-ming li,#panel-matchday p,#panel-matchday li{font-size:.96rem;line-height:1.65;}
   #panel-ming img{max-width:100%;height:auto;border-radius:10px;}
 }
 </style>
@@ -391,6 +399,7 @@ html{scroll-behavior:smooth;}
 <button class="tab-btn" data-tab="guia">Cómo comprar paso a paso</button>
 <button class="tab-btn" data-tab="preguntas">Dudas habituales</button>
 <button class="tab-btn" data-tab="ming">Pedidos especiales con Ming 💎</button>
+<button class="tab-btn" data-tab="matchday">🏆 Matchday Mundial</button>
 <button class="edit-toggle" id="themeToggleBtn" title="Cambiar tema claro/oscuro">🌙 Oscuro</button>
 </nav>
 <main>
@@ -399,8 +408,8 @@ html{scroll-behavior:smooth;}
 <input class="search-input" id="searchInput" placeholder="Buscar vendedor por nombre..." type="text"/>
 <select id="sortMode">
 <option value="name">Ordenar: Nombre (A-Z)</option>
-<option value="fanAsc">Ordenar: Precio Fan (menor a mayor)</option>
-<option value="fanDesc">Ordenar: Precio Fan (mayor a menor)</option>
+<option value="nameDesc">Ordenar: Nombre (Z-A)</option>
+<optgroup id="sortCatGroup" label="Por precio de categoría"></optgroup>
 </select>
 <label class="hint" style="display:flex; align-items:center; gap:6px; cursor:pointer;">
 <input id="freeShipFilter" type="checkbox"/> Solo con envío gratis
@@ -481,6 +490,20 @@ html{scroll-behavior:smooth;}
 <div class="note" style="margin:16px 0;">
 <h3 style="margin-top:0;">En resumen</h3>
 <p>La compra se coordina normalmente con Ming, pero las camisetas se envían primero al almacén de CSSBUY. Cuando Ming te entrega el número de seguimiento, lo cargás en CSSBUY. Una vez que las prendas llegan al almacén, gestionás desde allí el envío hacia Argentina y, después, continuás con el procedimiento habitual de ePago.</p>
+</div>
+</div>
+</section>
+<section class="panel" id="panel-matchday">
+<div class="compare-card" style="padding:20px;">
+<h2 style="margin-top:0;">🏆 Camisetas Matchday del Mundial</h2>
+<div class="tutorial-intro"><p>Además del parche fijo del torneo y de los parches personalizados (debut, Bota/Guante de Oro, Leyenda), la FIFA agrega en cada partido del Mundial 2026 una inscripción "matchday" debajo del escudo con los nombres de las selecciones, la fecha y el estadio de ese encuentro puntual. Acá te dejamos dónde ver las camisetas que reproducen ese detalle.</p></div>
+<div class="note" style="margin:16px 0;">
+<h3 style="margin-top:0;">¿Qué son las camisetas "Match Details"?</h3>
+<p>Son la versión que replica esa inscripción de partido, pensada para quienes buscan la réplica más fiel posible a lo usado en cancha en un cruce específico (por ejemplo, una final o un partido de octavos), a diferencia de la versión genérica de la selección sin ese dato.</p>
+</div>
+<div class="note" style="margin:16px 0;">
+<h3 style="margin-top:0;">Dónde verlas</h3>
+<p>El listado de camisetas con esta impresión está disponible en <a href="https://www.my-soccer.com/product/search?search=MATCH+DETAILS+WORLD+CUP&type=%5Bobject+Object%5D" rel="noopener" target="_blank">My-Soccer</a>, una tienda especializada en estampados (incluye reprints retro y personalizaciones) con una sección dedicada a las camisetas del Mundial 2026 con esta terminación.</p>
 </div>
 </div>
 </section>
@@ -686,14 +709,17 @@ function renderVendorCards(){
 
   if(sortMode==='name'){
     vendors.sort((a,b)=>a.name.localeCompare(b.name));
-  }else if(sortMode==='fanAsc' || sortMode==='fanDesc'){
+  }else if(sortMode==='nameDesc'){
+    vendors.sort((a,b)=>b.name.localeCompare(a.name));
+  }else if(sortMode.startsWith('cat:')){
+    const [, catKey, dir] = sortMode.split(':');
     vendors.sort((a,b)=>{
-      const af = a.prices.find(pr=>pr.key==='fan'), bf = b.prices.find(pr=>pr.key==='fan');
-      const an = af?af.num:null, bn = bf?bf.num:null;
+      const ap = a.prices.find(pr=>pr.key===catKey), bp = b.prices.find(pr=>pr.key===catKey);
+      const an = ap?ap.num:null, bn = bp?bp.num:null;
       if(an===null && bn===null) return 0;
       if(an===null) return 1;
       if(bn===null) return -1;
-      return sortMode==='fanAsc' ? an-bn : bn-an;
+      return dir==='asc' ? an-bn : bn-an;
     });
   }
   vendors = [...vendors.filter(v=>favorites.includes(v.id)), ...vendors.filter(v=>!favorites.includes(v.id))];
@@ -792,6 +818,13 @@ function populateRankSelect(){
   sel.innerHTML = CATS.map(c=>`<option value="${c.k}">${c.l}</option>`).join('');
   sel.addEventListener('change', renderRanking);
 }
+function populateSortSelect(){
+  const group = document.getElementById('sortCatGroup');
+  group.innerHTML = CATS.map(c=>`
+    <option value="cat:${c.k}:asc">Ordenar: ${c.l} (menor a mayor)</option>
+    <option value="cat:${c.k}:desc">Ordenar: ${c.l} (mayor a menor)</option>
+  `).join('');
+}
 function renderRanking(){
   const list = document.getElementById('rankList');
   const catKey = document.getElementById('rankCat').value;
@@ -868,6 +901,7 @@ setTimeout(hideLoadingOverlay, 4000);
     initTabs();
     applyTheme();
     populateRankSelect();
+    populateSortSelect();
 
     // Fondo aleatorio entre las dos fotos de estadio
     const photoVars = ['--photo-wide', '--photo-tall'];
