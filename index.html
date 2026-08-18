@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>🏆 Camisetas | Proveedores</title>
-<meta content="Listado y comparador de vendedores de camisetas: precios por prenda, envíos y contacto." name="description"/>
+<meta content="Listado y comparador de vendedores mayoristas de camisetas: precios por prenda, envíos y contacto." name="description"/>
 <link href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;text y='.9em' font-size='90'&gt;%F0%9F%8E%BD&lt;/text&gt;&lt;/svg&gt;" rel="icon"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
@@ -402,6 +402,8 @@ html{scroll-behavior:smooth;}
 .purchase-card b{font-family:'JetBrains Mono',monospace;font-size:15px}
 .purchase-card.highlight{border-color:rgba(242,183,5,.55);background:rgba(242,183,5,.07)}
 .purchase-warning{margin-top:10px;padding:10px 12px;border-left:3px solid var(--amber);background:rgba(242,183,5,.06);font-size:12px;color:var(--text-dim)}
+.order-comparison{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}.order-compare-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}.order-compare-head h3{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:20px;margin:0 0 4px}.order-compare-head p{margin:0;color:var(--text-dim);font-size:12px}.order-winner{margin-top:12px;border:1px solid rgba(79,190,121,.55);background:rgba(79,190,121,.07);border-radius:11px;padding:14px}.order-winner strong{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:20px}.order-winner .winner-total{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-top:5px}.order-compare-list{margin-top:9px;display:grid;gap:7px}.order-compare-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto auto;gap:10px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:9px 11px}.order-compare-rank{font-family:'Oswald',sans-serif;color:var(--amber);font-size:17px;text-align:center}.order-compare-name{font-family:'Oswald',sans-serif;text-transform:uppercase;font-size:14px}.order-compare-detail{font-size:10px;color:var(--text-faint);margin-top:2px}.order-compare-total{font-family:'JetBrains Mono',monospace;font-weight:700;white-space:nowrap}.order-compare-diff{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);white-space:nowrap}.order-compare-missing{border-color:rgba(226,72,61,.35)}.order-compare-missing .order-compare-total{color:var(--red)}
+@media(max-width:700px){.order-compare-row{grid-template-columns:28px minmax(0,1fr) auto}.order-compare-diff{grid-column:2/-1}.order-compare-total{grid-column:3;grid-row:1}.order-comparison{margin-top:14px}}
 @media(max-width:900px){
   .purchase-form{grid-template-columns:1fr 1fr!important}
   .purchase-form .smart-wide{grid-column:1/-1}
@@ -438,7 +440,10 @@ html{scroll-behavior:smooth;}
 <main>
 <section class="panel active" id="panel-lista">
 <div class="toolbar">
-<input class="search-input" id="searchInput" placeholder="Buscar vendedor por nombre..." type="text"/>
+<div class="search-wrap" style="position:relative; flex:1; min-width:200px;">
+<input class="search-input" id="searchInput" placeholder="Buscar por vendedor o producto (ej: shorts, retro)..." type="text" style="width:100%; box-sizing:border-box; padding-right:34px;"/>
+<button id="searchClear" type="button" aria-label="Limpiar búsqueda" title="Limpiar búsqueda" style="display:none; position:absolute; right:8px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-dim); font-size:16px; cursor:pointer; line-height:1; padding:4px;">✕</button>
+</div>
 <select id="sortMode">
 <option value="name">Ordenar: Nombre (A-Z)</option>
 <option value="nameDesc">Ordenar: Nombre (Z-A)</option>
@@ -476,7 +481,7 @@ html{scroll-behavior:smooth;}
     <div>
       <div class="section-label">Herramienta de compra</div>
       <h2>📋 Lista de compra</h2>
-      <p>Elegí un proveedor, agregá productos y cantidades y obtené el total de tu pedido.</p>
+      <p>Elegí un proveedor, agregá productos y cantidades y obtené el total de tu pedido. Sin margen, sin precio de venta y sin cálculos de rentabilidad.</p>
     </div>
   </div>
 
@@ -500,6 +505,7 @@ html{scroll-behavior:smooth;}
   <button class="ghost-btn" id="purchaseAddItem" type="button">＋ Agregar producto</button>
 
   <div id="smartResult" class="smart-result"></div>
+  <div id="orderComparison" class="order-comparison"></div>
 </div>
 </section>
 <section class="panel" id="panel-envios">
@@ -766,7 +772,14 @@ function shareVendorWhatsApp(v){
 function renderVendorCards(){
   const grid = document.getElementById('vendorGrid');
   const totalCount = BASE_VENDORS.length;
-  let vendors = BASE_VENDORS.filter(v => v.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const term = searchTerm.trim().toLowerCase();
+  const matchingCatKeys = term ? CATS.filter(c=>c.l.toLowerCase().includes(term)).map(c=>c.k) : [];
+  let vendors = BASE_VENDORS.filter(v => {
+    if(!term) return true;
+    if(v.name.toLowerCase().includes(term)) return true;
+    if(matchingCatKeys.length) return v.prices.some(pr=>matchingCatKeys.includes(pr.key) && pr.num!==null);
+    return false;
+  });
   if(freeShipOnly) vendors = vendors.filter(hasFreeShipping);
   if(favOnly) vendors = vendors.filter(v=>favorites.includes(v.id));
 
@@ -787,10 +800,12 @@ function renderVendorCards(){
   }
   vendors = [...vendors.filter(v=>favorites.includes(v.id)), ...vendors.filter(v=>!favorites.includes(v.id))];
 
-  document.getElementById('resultsCount').textContent = `Mostrando ${vendors.length} de ${totalCount} vendedores`;
+  const catMatchNote = (term && matchingCatKeys.length && !vendors.some(v=>v.name.toLowerCase().includes(term)))
+    ? ` (coincide con la categoría "${CATS.find(c=>matchingCatKeys.includes(c.k)).l}")` : '';
+  document.getElementById('resultsCount').textContent = `Mostrando ${vendors.length} de ${totalCount} vendedores${catMatchNote}`;
 
   if(vendors.length===0){
-    grid.innerHTML = `<div class="empty-state">No se encontraron vendedores con esos filtros.</div>`;
+    grid.innerHTML = `<div class="empty-state">No se encontraron vendedores con ese nombre o categoría de producto.</div>`;
     return;
   }
 
@@ -940,7 +955,9 @@ function initSmartBuyer(){
 
   document.getElementById('purchaseAddItem').addEventListener('click',()=>addPurchaseItem());
   document.getElementById('purchaseCalculate').addEventListener('click',renderPurchaseList);
-  vendor.addEventListener('change',renderPurchaseList);
+  vendor.addEventListener('change',()=>{ renderPurchaseList(); renderOrderComparison(); });
+  document.getElementById('purchaseExchange').addEventListener('input',()=>{ renderPurchaseList(); renderOrderComparison(); });
+  document.getElementById('purchaseShipping').addEventListener('input',()=>{ renderPurchaseList(); renderOrderComparison(); });
 
   addPurchaseItem();
 }
@@ -960,8 +977,8 @@ function addPurchaseItem(key,qty){
   wrap.appendChild(row);
   if(key) row.querySelector('.purchase-product').value=key;
 
-  row.querySelector('.purchase-product').addEventListener('change',renderPurchaseList);
-  row.querySelector('.purchase-qty').addEventListener('input',renderPurchaseList);
+  row.querySelector('.purchase-product').addEventListener('change',()=>{ renderPurchaseList(); renderOrderComparison(); });
+  row.querySelector('.purchase-qty').addEventListener('input',()=>{ renderPurchaseList(); renderOrderComparison(); });
 
   row.querySelector('.purchase-remove').addEventListener('click',()=>{
     if(wrap.children.length===1){
@@ -1072,6 +1089,29 @@ function renderPurchaseList(){
     if(target) target.textContent=product && product.num!==null ? purchaseMoney(total) : '—';
   });
 }
+function renderOrderComparison(){
+  const box=document.getElementById('orderComparison'); if(!box) return;
+  const items=getPurchaseItems(); if(!items.length){box.innerHTML='';return;}
+  const exchange=purchaseNum(document.getElementById('purchaseExchange')?.value);
+  const shipping=purchaseNum(document.getElementById('purchaseShipping')?.value);
+  const selectedVendorId=document.getElementById('purchaseVendor')?.value;
+  const quotes=BASE_VENDORS.map(v=>{
+    let subtotal=0,totalQty=0,missing=[];
+    items.forEach(it=>{const product=v.prices.find(p=>p.key===it.key);const category=CATS.find(c=>c.k===it.key);const name=category?.l||it.key;if(!product||product.num===null){missing.push(name);return;}subtotal+=product.num*it.qty;totalQty+=it.qty;});
+    return {vendor:v,subtotal,totalQty,missing,complete:missing.length===0};
+  });
+  const complete=quotes.filter(q=>q.complete).sort((a,b)=>a.subtotal-b.subtotal||a.vendor.name.localeCompare(b.vendor.name,'es'));
+  const incomplete=quotes.filter(q=>!q.complete).sort((a,b)=>a.vendor.name.localeCompare(b.vendor.name,'es'));
+  const ordered=[...complete,...incomplete],winner=complete[0];
+  if(!winner){box.innerHTML='<div class="smart-empty">No hay ningún vendedor con precio cargado para todo este pedido. Revisá los productos o completá los precios faltantes.</div>';return;}
+  const winnerTotal=winner.subtotal+shipping,winnerARS=exchange?purchaseARS(winnerTotal*exchange):'';
+  const selected=quotes.find(q=>q.vendor.id===selectedVendorId),selectedDiff=selected&&selected.complete?selected.subtotal-winner.subtotal:null;
+  box.innerHTML=`<div class="order-compare-head"><div><h3>Comparación del mismo pedido</h3><p>Se usa exactamente la misma lista y cantidades para todos los vendedores. El ranking se ordena por costo total de productos.</p></div>${selectedDiff!==null?`<div class="smart-badge">Tu vendedor actual: ${selected.vendor.name}</div>`:''}</div>
+  <div class="order-winner"><strong>🏆 El más barato es ${winner.vendor.name}</strong><div class="winner-total">${purchaseMoney(winner.subtotal)} en productos${shipping?` + ${purchaseMoney(shipping)} de envío`:''}</div>${winnerARS?`<div class="order-compare-detail">Total estimado: ${winnerARS}</div>`:''}${selectedDiff!==null?`<div class="order-compare-detail">${selectedDiff===0?'Es el mismo precio que tu vendedor seleccionado.':selectedDiff>0?`El vendedor seleccionado cuesta ${purchaseMoney(selectedDiff)} más.`:`El vendedor seleccionado es ${purchaseMoney(Math.abs(selectedDiff))} más barato.`}</div>`:''}</div>
+  <div class="order-compare-list">${ordered.map(q=>{const diff=q.complete?q.subtotal-winner.subtotal:null;return `<div class="order-compare-row ${q.complete?'':'order-compare-missing'}"><span class="order-compare-rank">${q.complete?'#'+(complete.indexOf(q)+1):'—'}</span><div><div class="order-compare-name">${q.vendor.name}</div><div class="order-compare-detail">${q.complete?`${q.totalQty} unidades · pedido completo`:`Faltan precios: ${q.missing.join(', ')}`}</div></div><span class="order-compare-total">${q.complete?purchaseMoney(q.subtotal+shipping):'No comparable'}</span><span class="order-compare-diff">${diff===null?'':diff===0?'mismo precio que el más barato':`+ ${purchaseMoney(diff)} vs. más barato`}</span></div>`;}).join('')}</div>
+  ${shipping?`<div class="order-compare-detail" style="margin-top:9px">Nota: el envío ingresado (${purchaseMoney(shipping)}) se suma igual a todos, por eso no cambia el ranking.</div>`:''}`;
+}
+
 function switchCompareView(view){
   compareView = view;
   document.querySelectorAll('.view-toggle button').forEach(b=>b.classList.toggle('active', b.dataset.view===view));
@@ -1138,6 +1178,15 @@ setTimeout(hideLoadingOverlay, 4000);
     });
     document.getElementById('searchInput').addEventListener('input', (e)=>{
       searchTerm = e.target.value;
+      document.getElementById('searchClear').style.display = searchTerm ? '' : 'none';
+      renderVendorCards();
+    });
+    document.getElementById('searchClear').addEventListener('click', ()=>{
+      searchTerm = '';
+      const input = document.getElementById('searchInput');
+      input.value = '';
+      document.getElementById('searchClear').style.display = 'none';
+      input.focus();
       renderVendorCards();
     });
     document.getElementById('sortMode').addEventListener('change', (e)=>{
@@ -1161,6 +1210,7 @@ setTimeout(hideLoadingOverlay, 4000);
     renderCompareTable();
     renderShipping();
     initSmartBuyer();
+    renderOrderComparison();
   }catch(err){
     console.error('Error al iniciar la página:', err);
   }finally{
