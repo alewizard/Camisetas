@@ -490,7 +490,7 @@ html{scroll-behavior:smooth;}
 <h2 style="margin-top:0;">🔎 Buscar en todos los catálogos</h2>
 <div class="note">
 <p>Escribí lo que buscás (por ejemplo <strong>"argentina 2026"</strong>, <strong>"retro"</strong> o <strong>"kit infantil"</strong>) y se genera automáticamente el link de búsqueda interna de cada catálogo, para no tener que entrar vendedor por vendedor y buscar a mano.</p>
-<p>Ojo: esto abre el buscador propio de cada catálogo, no busca dentro de esta página. Los resultados dependen de cómo cada vendedor tituló sus fotos, y algunos catálogos no tienen buscador propio disponible — para esos se puede entrar directo al catálogo desde la pestaña "Vendedores".</p>
+<p>Ojo: esto abre el buscador propio de cada catálogo (Yupoo / Zhidian), no busca dentro de esta página. Los resultados dependen de cómo cada vendedor tituló sus fotos, y algunos catálogos (los que no son Yupoo/Zhidian) no tienen buscador propio disponible — para esos se puede entrar directo al catálogo desde la pestaña "Vendedores".</p>
 </div>
 <div class="catalog-search-box">
 <input id="catalogSearchInput" placeholder='Ej: argentina 2026, retro, kit infantil...' type="text"/>
@@ -716,7 +716,7 @@ const p = (label, value, key) => ({label, value, key: key||null, num:n(value)});
 
 const BASE_VENDORS = [
   {id:'king', name:'King Group', tag:'Sin envíos a Argentina',
-    contacts:[{label:'WhatsApp', url:'https://wa.me/8617724213565'},{label:'Telegram', url:'https://t.me/Kinggroup_Seller'},{label:'Catálogo', url:'https://kingcommerce.com.br/catalogos-de-produtos-t/'}],
+    contacts:[{label:'WhatsApp', url:'https://wa.me/8617724213565'},{label:'Telegram', url:'https://t.me/Kinggroup_Seller'},{label:'Catálogo', url:'https://kinggroupbrazil.x.yupoo.com/'}],
     prices:[p('Fan','11$','fan'), p('Player Adidas','14$','playerAdidas'), p('Player Nike','15$','playerNike'), p('Cuello polo','+1$'), p('Retro','15$','retro'), p('Manga larga','14$'), p('NBA','20$','nba'), p('Kit Infantil','13$','kitInfantil'), p('Shorts','9$','shortFan'), p('Medias','4$','medias'), p('Parche','+1$','parche'), p('Personalizada','3$','personalizacion'), p('Talle 2XL','+1$')],
     shipping:[{label:'1 pieza',value:'5$'},{label:'2 piezas',value:'4$'},{label:'3 piezas',value:'3$'},{label:'4 piezas',value:'Gratis'}]},
   {id:'huang', name:'Huang (M)',
