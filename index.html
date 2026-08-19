@@ -175,13 +175,15 @@
   /* Contenido de los tutoriales: misma legibilidad que la sección Ming */
   #panel-guia .compare-card,
   #panel-preguntas .compare-card,
-  #panel-matchday .compare-card{
+  #panel-matchday .compare-card,
+  #panel-buscar .compare-card{
     font-family:'Inter',sans-serif;
     color:var(--text);
   }
   #panel-guia .compare-card > h2,
   #panel-preguntas .compare-card > h2,
-  #panel-matchday .compare-card > h2{
+  #panel-matchday .compare-card > h2,
+  #panel-buscar .compare-card > h2{
     font-family:'Oswald',sans-serif;
     color:var(--text);
     font-size:26px;
@@ -190,7 +192,8 @@
   }
   #panel-guia .note,
   #panel-preguntas .note,
-  #panel-matchday .note{
+  #panel-matchday .note,
+  #panel-buscar .note{
     font-family:'Inter',sans-serif;
     font-size:14px;
     color:var(--text);
@@ -215,7 +218,9 @@
   #panel-guia .note li,
   #panel-preguntas .note li,
   #panel-matchday .note p,
-  #panel-matchday .note li{
+  #panel-matchday .note li,
+  #panel-buscar .note p,
+  #panel-buscar .note li{
     font-family:'Inter',sans-serif;
     color:var(--text);
     font-size:14px;
@@ -223,10 +228,12 @@
   }
   #panel-guia .note a,
   #panel-preguntas .note a,
-  #panel-matchday .note a{color:var(--amber);}
+  #panel-matchday .note a,
+  #panel-buscar .note a{color:var(--amber);}
   #panel-guia strong,
   #panel-preguntas strong,
-  #panel-matchday strong{color:var(--text);}
+  #panel-matchday strong,
+  #panel-buscar strong{color:var(--text);}
   details summary{cursor:pointer; font-size:12px; color:var(--amber); font-family:'JetBrains Mono',monospace; margin-top:2px;}
   details[open] summary{margin-bottom:6px;}
 
@@ -236,7 +243,7 @@
   .quick-nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px;}
   .quick-nav a{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--text);text-decoration:none;font-size:12px;font-weight:600;transition:.15s ease;}
   .quick-nav a:hover{border-color:var(--amber);color:var(--amber);transform:translateY(-1px);}
-  #panel-guia .note,#panel-preguntas .note,#panel-ming .note,#panel-matchday .note{box-shadow:var(--shadow-sm);}
+  #panel-guia .note,#panel-preguntas .note,#panel-ming .note,#panel-matchday .note,#panel-buscar .note{box-shadow:var(--shadow-sm);}
   #panel-guia .note{position:relative;padding-left:20px;}
   #panel-guia .note h3{display:flex;align-items:center;gap:9px;}
   #panel-guia .note h3::before{content:'✓';display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;border-radius:50%;background:rgba(242,183,5,.13);border:1px solid rgba(242,183,5,.35);color:var(--amber);font-family:'JetBrains Mono',monospace;font-size:12px;flex:none;}
@@ -255,6 +262,24 @@
     .quick-nav a{flex:1 1 calc(50% - 8px);justify-content:center;}
     #panel-preguntas .faq-item summary{font-size:16px;}
   }
+
+  .catalog-search-box{display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 4px;}
+  .catalog-search-box input{flex:1 1 240px; min-width:0; box-sizing:border-box; background:var(--bg-2); border:1px solid var(--line); color:var(--text); padding:11px 14px; border-radius:9px; font-family:'Inter',sans-serif; font-size:14px;}
+  .catalog-search-box input:focus{outline:none; border-color:var(--amber);}
+  #catalogSearchSummary{margin:12px 0 16px; color:var(--text-dim); font-size:13px; line-height:1.6; font-style:normal;}
+  .catalog-search-results{display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:12px;}
+  .catalog-search-card{border:1px solid var(--line); background:var(--surface); border-radius:10px; padding:12px 14px;}
+  .catalog-search-name{font-family:'Oswald',sans-serif; text-transform:uppercase; font-size:14px; letter-spacing:.02em; margin-bottom:9px; color:var(--text);}
+  .catalog-search-empty{padding:18px; border:1px dashed var(--line); border-radius:10px; color:var(--text-faint); font-size:13px;}
+  .catalog-chip-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0 2px;}
+  .catalog-chip-label{font-size:11px; color:var(--text-faint); font-family:'JetBrains Mono',monospace; margin-right:2px;}
+  .catalog-chip{font-family:'JetBrains Mono',monospace; font-size:11.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--surface-2); color:var(--text-dim); cursor:pointer; transition:.15s ease;}
+  .catalog-chip:hover{border-color:var(--amber); color:var(--amber);}
+  .catalog-chip.recent{border-style:dashed;}
+  .catalog-chip.translate{border-color:rgba(242,183,5,.45); color:var(--amber);}
+  .catalog-chip.translate:hover{background:rgba(242,183,5,.1);}
+  .extra-catalogs{margin-top:8px;}
+  @media(max-width:600px){ .catalog-search-box{flex-direction:column;} .catalog-search-box button{width:100%;} }
 
   .card-actions{display:flex; gap:8px; margin-top:2px;}
   .mini-btn{ font-family:'JetBrains Mono',monospace; font-size:11px; padding:5px 10px; border-radius:6px; cursor:pointer; border:1px solid var(--line-soft); background:rgba(0,0,0,0.15); color:var(--text-dim); }
@@ -375,10 +400,10 @@ html{scroll-behavior:smooth;}
 @media (max-width:700px){
   .quick-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
   .quick-nav a{width:100%;box-sizing:border-box;font-size:.92rem;padding:9px 8px;}
-  #panel-guia .compare-card,#panel-preguntas .compare-card,#panel-ming .compare-card,#panel-matchday .compare-card{padding:15px!important;}
-  #panel-guia h2,#panel-preguntas h2,#panel-ming h2,#panel-matchday h2{font-size:1.35rem;}
-  #panel-guia h3,#panel-preguntas h3,#panel-ming h3,#panel-matchday h3{font-size:1.05rem;line-height:1.35;}
-  #panel-guia p,#panel-preguntas p,#panel-preguntas li,#panel-ming p,#panel-ming li,#panel-matchday p,#panel-matchday li{font-size:.96rem;line-height:1.65;}
+  #panel-guia .compare-card,#panel-preguntas .compare-card,#panel-ming .compare-card,#panel-matchday .compare-card,#panel-buscar .compare-card{padding:15px!important;}
+  #panel-guia h2,#panel-preguntas h2,#panel-ming h2,#panel-matchday h2,#panel-buscar h2{font-size:1.35rem;}
+  #panel-guia h3,#panel-preguntas h3,#panel-ming h3,#panel-matchday h3,#panel-buscar h3{font-size:1.05rem;line-height:1.35;}
+  #panel-guia p,#panel-preguntas p,#panel-preguntas li,#panel-ming p,#panel-ming li,#panel-matchday p,#panel-matchday li,#panel-buscar p,#panel-buscar li{font-size:.96rem;line-height:1.65;}
   #panel-ming img{max-width:100%;height:auto;border-radius:10px;}
 }
 
@@ -429,6 +454,7 @@ html{scroll-behavior:smooth;}
 <div class="pitch-ticker">Proveedores de camisetas</div>
 <nav class="tabs" style="margin-top:20px;">
 <button class="tab-btn active" data-tab="lista">Vendedores</button>
+<button class="tab-btn" data-tab="buscar">🔎 Buscar en catálogos</button>
 <button class="tab-btn" data-tab="comparar">Comparar precios</button>
 <button class="tab-btn" data-tab="envios">Envíos</button>
 <button class="tab-btn" data-tab="guia">Cómo comprar paso a paso</button>
@@ -458,6 +484,27 @@ html{scroll-behavior:smooth;}
 </div>
 <p class="hint" id="resultsCount" style="margin:-6px 0 14px;"></p>
 <div class="grid" id="vendorGrid"></div>
+</section>
+<section class="panel" id="panel-buscar">
+<div class="compare-card" style="padding:20px;">
+<h2 style="margin-top:0;">🔎 Buscar en todos los catálogos</h2>
+<div class="note">
+<p>Escribí lo que buscás (por ejemplo <strong>"argentina 2026"</strong>, <strong>"retro"</strong> o <strong>"kit infantil"</strong>) y se genera automáticamente el link de búsqueda interna de cada catálogo, para no tener que entrar vendedor por vendedor y buscar a mano.</p>
+<p>Ojo: esto abre el buscador propio de cada catálogo (Yupoo / Zhidian), no busca dentro de esta página. Los resultados dependen de cómo cada vendedor tituló sus fotos, y algunos catálogos (los que no son Yupoo/Zhidian) no tienen buscador propio disponible — para esos se puede entrar directo al catálogo desde la pestaña "Vendedores".</p>
+</div>
+<div class="catalog-search-box">
+<input id="catalogSearchInput" placeholder='Ej: argentina 2026, retro, kit infantil...' type="text"/>
+<button class="submit-btn" id="catalogSearchBtn" type="button">Generar búsquedas</button>
+<button class="ghost-btn" id="catalogSearchOpenAllBtn" type="button" title="Abre una pestaña por cada catálogo compatible">Abrir todas las pestañas</button>
+</div>
+<label class="hint" style="display:flex; align-items:center; gap:6px; cursor:pointer; margin-top:10px;">
+<input id="catalogSearchIncludeOthers" type="checkbox"/> Incluir catálogos de zapatillas / botines / otros productos
+</label>
+<div class="catalog-chip-row" id="catalogSuggestions"></div>
+<div class="catalog-chip-row" id="catalogTranslateHint"></div>
+<p class="hint" id="catalogSearchSummary"></p>
+<div class="catalog-search-results" id="catalogSearchResults"></div>
+</div>
 </section>
 <section class="panel" id="panel-comparar">
 <div class="view-toggle">
@@ -573,6 +620,19 @@ html{scroll-behavior:smooth;}
 <div class="note" style="margin:16px 0;">
 <h3 style="margin-top:0;">Dónde verlas</h3>
 <p>El listado de camisetas con esta impresión está disponible en <a href="https://www.my-soccer.com/product/search?search=MATCH+DETAILS+WORLD+CUP&type=%5Bobject+Object%5D" rel="noopener" target="_blank">My-Soccer</a>, una tienda especializada en estampados (incluye reprints retro y personalizaciones) con una sección dedicada a las camisetas del Mundial 2026 con esta terminación.</p>
+</div>
+<div class="note" style="margin:16px 0;">
+<h3 style="margin-top:0;">Buscar el parche de un partido puntual</h3>
+<p>Elegí las dos selecciones que se enfrentaron y armamos el link de búsqueda directo en My-Soccer, sin tener que entrar a la página y buscarlo a mano. Ojo: es el buscador interno de My-Soccer, no de esta página — los resultados dependen de cómo el vendedor tituló cada producto.</p>
+<div class="catalog-search-box">
+<input id="matchdayTeamA" list="matchdayTeamsList" placeholder="Selección 1 (ej: Argentina)" type="text"/>
+<input id="matchdayTeamB" list="matchdayTeamsList" placeholder="Selección 2 (ej: Brasil)" type="text"/>
+<button class="submit-btn" id="matchdaySearchBtn" type="button">Buscar parche 🔎</button>
+</div>
+<datalist id="matchdayTeamsList">
+<option value="Argentina"></option><option value="Brasil"></option><option value="Uruguay"></option><option value="Colombia"></option><option value="Ecuador"></option><option value="Paraguay"></option><option value="Chile"></option><option value="Bolivia"></option><option value="Venezuela"></option><option value="Peru"></option><option value="Mexico"></option><option value="USA"></option><option value="Canada"></option><option value="Costa Rica"></option><option value="Panama"></option><option value="Honduras"></option><option value="Jamaica"></option><option value="Spain"></option><option value="France"></option><option value="Germany"></option><option value="Italy"></option><option value="Portugal"></option><option value="England"></option><option value="Netherlands"></option><option value="Belgium"></option><option value="Croatia"></option><option value="Switzerland"></option><option value="Denmark"></option><option value="Poland"></option><option value="Austria"></option><option value="Scotland"></option><option value="Norway"></option><option value="Serbia"></option><option value="Ukraine"></option><option value="Turkey"></option><option value="Sweden"></option><option value="Wales"></option><option value="Slovenia"></option><option value="Czech Republic"></option><option value="Japan"></option><option value="South Korea"></option><option value="Saudi Arabia"></option><option value="Iran"></option><option value="Qatar"></option><option value="Australia"></option><option value="Uzbekistan"></option><option value="Jordan"></option><option value="Morocco"></option><option value="Senegal"></option><option value="Nigeria"></option><option value="Egypt"></option><option value="Tunisia"></option><option value="Algeria"></option><option value="Ghana"></option><option value="Cameroon"></option><option value="Ivory Coast"></option><option value="South Africa"></option><option value="Cape Verde"></option><option value="New Zealand"></option>
+</datalist>
+<p class="hint" id="matchdaySearchSummary" style="margin-top:10px;"></p>
 </div>
 </div>
 </section>
@@ -724,14 +784,20 @@ let favorites = [];
 let themePref = 'dark';
 let compareCats = new Set(CATS.map(c=>c.k));
 let compareView = 'table';
+let catalogSearchHistory = [];
+let lastCatalogQuery = '';
 
 /* ---------------- LOCAL STORAGE HELPERS ---------------- */
 function loadLocal(){
   try{ favorites = JSON.parse(localStorage.getItem('vendedores-favorites') || '[]'); }catch(e){ favorites = []; }
   try{ themePref = localStorage.getItem('vendedores-theme') || 'dark'; }catch(e){ themePref = 'dark'; }
+  try{ catalogSearchHistory = JSON.parse(localStorage.getItem('vendedores-catalog-history') || '[]'); }catch(e){ catalogSearchHistory = []; }
+  try{ lastCatalogQuery = localStorage.getItem('vendedores-catalog-last-query') || ''; }catch(e){ lastCatalogQuery = ''; }
 }
 function saveFavorites(){ try{ localStorage.setItem('vendedores-favorites', JSON.stringify(favorites)); }catch(e){} }
 function saveTheme(){ try{ localStorage.setItem('vendedores-theme', themePref); }catch(e){} }
+function saveCatalogHistory(){ try{ localStorage.setItem('vendedores-catalog-history', JSON.stringify(catalogSearchHistory)); }catch(e){} }
+function saveLastCatalogQuery(q){ try{ localStorage.setItem('vendedores-catalog-last-query', q); }catch(e){} }
 
 /* ---------------- TOASTS ---------------- */
 function showToast(message, type='success'){
@@ -1134,6 +1200,216 @@ function renderShipping(){
 }
 
 /* ---------------- TABS ---------------- */
+/* ---------------- BUSCADOR MULTI-CATÁLOGO ---------------- */
+// Yupoo y Zhidian (misma plataforma detrás) tienen buscador propio por tienda,
+// accesible vía /search/album?uid=1&q=TÉRMINO. Esto arma ese link automáticamente
+// para cada catálogo de cada vendedor, sin depender de una búsqueda global real
+// (que no existe: son sitios de terceros sin API pública compartida entre ellos).
+const CATALOG_QUICK_SUGGESTIONS = ['Argentina 2026','Retro','Kit infantil','Manga larga','NBA','Shorts'];
+const CATALOG_MAX_VISIBLE_LINKS = 4;
+// Glosario propio ES<->EN para los términos típicos de este rubro. No es un traductor
+// automático real (no dependemos de una API externa que pueda fallar o tener límites),
+// sino una tabla curada de los mismos términos que ya usan las categorías del sitio,
+// pensada para cuando un catálogo titula sus álbumes en inglés en vez de español.
+const CATALOG_TRANSLATIONS = {
+  'camiseta':'jersey', 'camisetas':'jerseys', 'remera':'jersey', 'remeras':'jerseys',
+  'fan':'fan version', 'player':'player version', 'jugador':'player version',
+  'retro':'retro', 'vintage':'retro',
+  'shorts':'shorts', 'short':'shorts', 'pantaloneta':'shorts',
+  'medias':'socks', 'calcetines':'socks',
+  'kit infantil':'kids kit', 'infantil':'kids', 'nino':'kids', 'ninos':'kids', 'nina':'kids', 'ninas':'kids',
+  'kit entrenamiento':'training kit', 'entrenamiento':'training',
+  'parche':'patch', 'parches':'patches',
+  'personalizada':'custom', 'personalizado':'custom', 'personalizacion':'customization',
+  'manga larga':'long sleeve', 'manga corta':'short sleeve',
+  'campera':'jacket', 'chaqueta':'jacket', 'rompevientos':'windbreaker',
+  'pantalon':'pants', 'pantalones':'pants', 'calza':'pants',
+  'polo':'polo', 'cuello polo':'polo collar',
+  'zapatillas':'sneakers', 'botines':'football boots', 'championes':'sneakers',
+  'gorra':'cap', 'gorro':'beanie',
+  'conjunto':'tracksuit', 'chandal':'tracksuit', 'buzo':'tracksuit jacket',
+  'mundial':'world cup', 'seleccion':'national team', 'seleccion nacional':'national team',
+  'talle':'size', 'talla':'size',
+  'hombre':'men', 'mujer':'women',
+  'futbol':'football', 'basquet':'basketball', 'basket':'basketball',
+  'nba':'nba', 'nfl':'nfl',
+};
+const CATALOG_TRANSLATIONS_REVERSE = {};
+Object.keys(CATALOG_TRANSLATIONS).forEach(k=>{
+  const v = CATALOG_TRANSLATIONS[k];
+  if(!(v in CATALOG_TRANSLATIONS_REVERSE)) CATALOG_TRANSLATIONS_REVERSE[v] = k;
+});
+// Catálogos que muchos vendedores comparten para OTROS productos (zapatillas, botines,
+// gorras, etc.). El buscador de Yupoo/Zhidian busca en TODA la tienda sin distinguir
+// categorías, así que si mandamos la búsqueda a estos catálogos, aparece ruido de
+// productos que no son camisetas. Se excluyen por defecto (con opción de incluirlos).
+const CATALOG_NON_JERSEY_KEYWORDS = ['zapatilla','botin','botines','shoe','cap','hoodie','fashion brand','t-shirt','tshirt',"children's shoes"];
+function isNonJerseyCatalogLabel(label){
+  const norm = normalizeTermForMatch(label);
+  return CATALOG_NON_JERSEY_KEYWORDS.some(kw=> norm.includes(kw));
+}
+function normalizeTermForMatch(str){
+  return String(str||'').toLowerCase();
+}
+function normalizeTerm(str){
+  return String(str||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+}
+function translateCatalogQuery(query){
+  const norm = normalizeTerm(query);
+  if(!norm) return null;
+  if(CATALOG_TRANSLATIONS[norm]) return CATALOG_TRANSLATIONS[norm];
+  if(CATALOG_TRANSLATIONS_REVERSE[norm]) return CATALOG_TRANSLATIONS_REVERSE[norm];
+  const words = norm.split(/\s+/);
+  let any = false;
+  const translatedWords = words.map(w=>{
+    if(CATALOG_TRANSLATIONS[w]){ any = true; return CATALOG_TRANSLATIONS[w]; }
+    if(CATALOG_TRANSLATIONS_REVERSE[w]){ any = true; return CATALOG_TRANSLATIONS_REVERSE[w]; }
+    return w;
+  });
+  return any ? translatedWords.join(' ') : null;
+}
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function parseCatalogSearchBase(rawUrl){
+  try{
+    const u = new URL(rawUrl);
+    const host = u.hostname;
+    if(host === 'x.yupoo.com'){
+      // formato compartido: x.yupoo.com/photos/NOMBRE-DE-TIENDA/...
+      const parts = u.pathname.split('/').filter(Boolean);
+      if(parts[0] === 'photos' && parts[1]) return `https://x.yupoo.com/photos/${parts[1]}`;
+      return null;
+    }
+    if(/\.yupoo\.com$/.test(host) || /\.zhidian-inc\.cn$/.test(host)){
+      return `${u.protocol}//${host}`;
+    }
+    return null; // otras plataformas (ej. kingcommerce.com.br) no tienen este buscador
+  }catch(e){ return null; }
+}
+function buildCatalogSearchUrl(rawUrl, query){
+  const base = parseCatalogSearchBase(rawUrl);
+  if(!base) return null;
+  return `${base}/search/album?uid=1&q=${encodeURIComponent(query)}`;
+}
+function getVendorSearchableCatalogs(vendor, includeOthers){
+  const seen = new Set();
+  const out = [];
+  (vendor.contacts||[]).forEach(c=>{
+    if(!includeOthers && isNonJerseyCatalogLabel(c.label)) return;
+    const base = parseCatalogSearchBase(c.url);
+    if(base && !seen.has(base)){
+      seen.add(base);
+      out.push({label:c.label, url:c.url});
+    }
+  });
+  return out;
+}
+function addToCatalogHistory(query){
+  query = (query||'').trim();
+  if(!query) return;
+  catalogSearchHistory = catalogSearchHistory.filter(q=>q.toLowerCase() !== query.toLowerCase());
+  catalogSearchHistory.unshift(query);
+  catalogSearchHistory = catalogSearchHistory.slice(0,5);
+  saveCatalogHistory();
+}
+function renderCatalogSuggestions(){
+  const box = document.getElementById('catalogSuggestions');
+  if(!box) return;
+  if(catalogSearchHistory.length){
+    box.innerHTML = `<span class="catalog-chip-label">Recientes:</span>` +
+      catalogSearchHistory.map(s=>`<button class="catalog-chip recent" data-q="${escapeHtml(s)}" type="button">${escapeHtml(s)}</button>`).join('');
+  }else{
+    box.innerHTML = `<span class="catalog-chip-label">Sugerencias:</span>` +
+      CATALOG_QUICK_SUGGESTIONS.map(s=>`<button class="catalog-chip" data-q="${escapeHtml(s)}" type="button">${escapeHtml(s)}</button>`).join('');
+  }
+}
+function renderCatalogSearch(query){
+  const results = document.getElementById('catalogSearchResults');
+  const summary = document.getElementById('catalogSearchSummary');
+  if(!results || !summary) return;
+  query = (query||'').trim();
+  if(!query){
+    results.innerHTML = '';
+    summary.textContent = '';
+    return;
+  }
+  const includeOthers = document.getElementById('catalogSearchIncludeOthers')?.checked || false;
+  let withSearch = 0;
+  let excludedCatalogs = 0;
+  const withoutSearch = [];
+  const cardsHtml = BASE_VENDORS.map(v=>{
+    const catalogs = getVendorSearchableCatalogs(v, includeOthers);
+    if(!includeOthers){
+      excludedCatalogs += getVendorSearchableCatalogs(v, true).length - catalogs.length;
+    }
+    if(catalogs.length === 0){
+      withoutSearch.push(v.name);
+      return '';
+    }
+    withSearch++;
+    const visible = catalogs.slice(0, CATALOG_MAX_VISIBLE_LINKS);
+    const extra = catalogs.slice(CATALOG_MAX_VISIBLE_LINKS);
+    const linkHtml = c=>{
+      const url = buildCatalogSearchUrl(c.url, query);
+      return `<a class="mini-btn" href="${url}" rel="noopener" target="_blank">🔎 ${escapeHtml(c.label)}</a>`;
+    };
+    let html = `<div class="card-actions" style="flex-wrap:wrap;">${visible.map(linkHtml).join('')}</div>`;
+    if(extra.length){
+      html += `<details class="extra-catalogs"><summary>+${extra.length} catálogo${extra.length>1?'s':''} más</summary>
+        <div class="card-actions" style="flex-wrap:wrap;margin-top:8px;">${extra.map(linkHtml).join('')}</div></details>`;
+    }
+    return `<div class="catalog-search-card">
+      <div class="catalog-search-name">${escapeHtml(v.name)}</div>
+      ${html}
+    </div>`;
+  }).join('');
+  results.innerHTML = cardsHtml || `<div class="catalog-search-empty">Ningún vendedor tiene catálogo compatible con búsqueda directa.</div>`;
+  let text = `Búsquedas de "${query}" generadas para ${withSearch} de ${BASE_VENDORS.length} vendedores.`;
+  if(excludedCatalogs > 0){
+    text += ` Se dejaron afuera ${excludedCatalogs} catálogo(s) de zapatillas/botines/otros productos para evitar resultados de cosas que no son camisetas (tildá la casilla de arriba si querés incluirlos).`;
+  }
+  if(withoutSearch.length){
+    text += ` Sin buscador propio disponible: ${withoutSearch.join(', ')} (podés revisar sus catálogos manualmente desde la pestaña Vendedores).`;
+  }
+  summary.textContent = text;
+}
+function renderCatalogTranslateHint(query){
+  const box = document.getElementById('catalogTranslateHint');
+  if(!box) return;
+  const translated = translateCatalogQuery(query);
+  if(!translated || normalizeTerm(translated) === normalizeTerm(query)){
+    box.innerHTML = '';
+    return;
+  }
+  box.innerHTML = `<span class="catalog-chip-label">💡 Algunos catálogos titulan en inglés — probá también:</span>` +
+    `<button class="catalog-chip translate" data-q="${escapeHtml(translated)}" type="button">${escapeHtml(translated)}</button>`;
+}
+function runCatalogSearch(query){
+  query = (query||'').trim();
+  renderCatalogSearch(query);
+  renderCatalogTranslateHint(query);
+  if(query){
+    addToCatalogHistory(query);
+    saveLastCatalogQuery(query);
+    renderCatalogSuggestions();
+  }
+}
+function openAllCatalogSearches(query){
+  query = (query||'').trim();
+  if(!query){ showToast('Escribí un término de búsqueda primero', 'error'); return; }
+  const includeOthers = document.getElementById('catalogSearchIncludeOthers')?.checked || false;
+  let opened = 0;
+  BASE_VENDORS.forEach(v=>{
+    getVendorSearchableCatalogs(v, includeOthers).forEach(c=>{
+      const url = buildCatalogSearchUrl(c.url, query);
+      if(url){ window.open(url, '_blank', 'noopener'); opened++; }
+    });
+  });
+  if(opened === 0) showToast('No hay catálogos compatibles para abrir', 'error');
+  else showToast(`Abriendo ${opened} pestañas — si el navegador bloqueó ventanas emergentes, permitilas para este sitio`, 'success');
+}
+
 function initTabs(){
   document.querySelectorAll('.tab-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -1204,6 +1480,38 @@ setTimeout(hideLoadingOverlay, 4000);
     document.querySelectorAll('.view-toggle button').forEach(btn=>{
       btn.addEventListener('click', ()=> switchCompareView(btn.dataset.view));
     });
+    document.getElementById('catalogSearchBtn').addEventListener('click', ()=>{
+      runCatalogSearch(document.getElementById('catalogSearchInput').value);
+    });
+    document.getElementById('catalogSearchIncludeOthers').addEventListener('change', ()=>{
+      renderCatalogSearch(document.getElementById('catalogSearchInput').value);
+    });
+    document.getElementById('catalogSearchOpenAllBtn').addEventListener('click', ()=>{
+      openAllCatalogSearches(document.getElementById('catalogSearchInput').value);
+    });
+    document.getElementById('catalogSearchInput').addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter') runCatalogSearch(e.target.value);
+    });
+    document.getElementById('catalogSuggestions').addEventListener('click', (e)=>{
+      const chip = e.target.closest('.catalog-chip');
+      if(!chip) return;
+      const q = chip.dataset.q;
+      document.getElementById('catalogSearchInput').value = q;
+      runCatalogSearch(q);
+    });
+    document.getElementById('catalogTranslateHint').addEventListener('click', (e)=>{
+      const chip = e.target.closest('.catalog-chip');
+      if(!chip) return;
+      const q = chip.dataset.q;
+      document.getElementById('catalogSearchInput').value = q;
+      runCatalogSearch(q);
+    });
+    renderCatalogSuggestions();
+    if(lastCatalogQuery){
+      document.getElementById('catalogSearchInput').value = lastCatalogQuery;
+      renderCatalogSearch(lastCatalogQuery);
+      renderCatalogTranslateHint(lastCatalogQuery);
+    }
 
     renderVendorCards();
     renderCatChips();
@@ -1278,6 +1586,34 @@ setTimeout(hideLoadingOverlay, 4000);
     },{passive:true});
     backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
   }
+  /* ---------------- MATCHDAY PATCH SEARCH ---------------- */
+  const teamAInput = document.getElementById('matchdayTeamA');
+  const teamBInput = document.getElementById('matchdayTeamB');
+  const matchdayBtn = document.getElementById('matchdaySearchBtn');
+  const matchdaySummary = document.getElementById('matchdaySearchSummary');
+  function buildMatchdayUrl(teamA, teamB){
+    const q = `${teamA} vs ${teamB} World Cup Match Details`;
+    return `https://www.my-soccer.com/product/search?search=${encodeURIComponent(q)}&type=%5Bobject+Object%5D`;
+  }
+  function runMatchdaySearch(){
+    const a = (teamAInput?.value || '').trim();
+    const b = (teamBInput?.value || '').trim();
+    if(!a || !b){
+      if(matchdaySummary) matchdaySummary.textContent = 'Completá las dos selecciones para generar el link.';
+      return;
+    }
+    const url = buildMatchdayUrl(a, b);
+    if(matchdaySummary){
+      matchdaySummary.innerHTML = `Abriendo búsqueda para <strong>${a} vs ${b}</strong>… si no aparece nada, probá invertir el orden o buscar solo con una selección.`;
+    }
+    window.open(url, '_blank', 'noopener');
+  }
+  if(matchdayBtn) matchdayBtn.addEventListener('click', runMatchdaySearch);
+  [teamAInput, teamBInput].forEach(inp=>{
+    if(!inp) return;
+    inp.addEventListener('keydown', e=>{ if(e.key === 'Enter') runMatchdaySearch(); });
+  });
+
   document.querySelectorAll('.quick-nav a').forEach(a=>{
     a.addEventListener('click',function(e){
       const id=this.getAttribute('href');
