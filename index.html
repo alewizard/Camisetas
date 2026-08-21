@@ -319,6 +319,118 @@
   .rank-item.top .rank-medal{ color:var(--amber); }
   .rank-name{ flex:1; font-weight:600; font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.02em; font-size:14px; }
   .rank-value{ font-family:'JetBrains Mono',monospace; font-size:15px; color:var(--amber); font-weight:700; white-space:nowrap; }
+  .rank-bar-col{ flex:1; display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .rank-bar-track{ height:9px; border-radius:5px; background:var(--line-soft); overflow:hidden; }
+  .rank-bar-fill{ height:100%; border-radius:5px; background:var(--amber-dim); transition:width .3s ease; }
+  .rank-bar-fill.best{ background:var(--green); }
+  .cart-history{ background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .cart-history-list{ display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+  .cart-history-item{ display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 14px; flex-wrap:wrap; }
+  .cart-history-info{ flex:1; min-width:160px; font-size:13px; color:var(--text-dim); line-height:1.5; }
+  .cart-history-info strong{ color:var(--text); font-family:'Oswald',sans-serif; text-transform:uppercase; font-size:13.5px; letter-spacing:.02em; }
+  .cart-history-actions{ display:flex; gap:6px; flex-wrap:wrap; }
+  .track-tool{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .track-tool input{ flex:1; min-width:180px; }
+  .track-result-card{ margin-top:16px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow-sm); }
+  .correo-embed-wrap{ background:#fff; min-height:720px; overflow:hidden; }
+  #correoTrackingFrame{ display:block; width:100%; height:720px; border:0; background:#fff; }
+
+  .track-result-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 16px; background:var(--surface-2); border-bottom:1px solid var(--line); font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.02em; font-size:13.5px; color:var(--text); }
+  /* El iframe de 17TRACK es de otro dominio: no podemos leer ni tocar lo que hay adentro. Eso
+     incluye los anuncios que a veces mete entre los eventos del envío (los sirve Google Ads en
+     vivo, en cualquier posición) — no hay forma de detectarlos ni recortarlos desde afuera, así
+     que no prometemos "sin anuncios". Lo que sí hacemos:
+     1) Tapamos el banner de la app de 17TRACK, que ese sí está siempre fijo arriba de todo.
+     2) Mostramos una vista compacta por defecto (con botón "Ver historial completo"), útil de por
+        sí más allá del tema anuncios.
+     3) Le ponemos sandbox al iframe para que ningún anuncio pueda secuestrar la pestaña entera. */
+  :root{ --track-visible-h:640px; --top-patch-h:74px; --bottom-patch-h:130px; }
+  .track-result-body{ position:relative; min-height:100px; background:#fff; overflow-y:auto; overflow-x:hidden; max-height:var(--track-visible-h); }
+  .track-result-body::-webkit-scrollbar{ width:8px; }
+  .track-result-body::-webkit-scrollbar-thumb{ background:var(--line); border-radius:4px; }
+  .track-expand-btn{
+    display:none; width:100%; padding:11px 16px; border:none; cursor:pointer;
+    background:var(--surface-2); border-top:1px solid var(--line);
+    font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.03em;
+    font-size:12px; color:var(--amber);
+  }
+  .track-expand-btn:hover{ color:#fff; }
+  .track-patch{
+    position:absolute; left:0; right:0; top:0; z-index:2; height:var(--top-patch-h);
+    background:linear-gradient(180deg,#ffffff 0%, #f6f9f6 100%);
+    box-shadow:inset 0 -1px 0 #eef1ee;
+    display:flex; align-items:center; gap:10px; padding:0 18px;
+  }
+  .track-patch-icon{
+    flex:none; width:28px; height:28px; border-radius:50%;
+    background:var(--amber); color:#1a1a1a; font-size:14px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 2px 8px -1px rgba(242,183,5,0.55);
+  }
+  .track-patch-text{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .track-patch-title{
+    font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.03em;
+    font-size:12.5px; color:#33413a; line-height:1.2;
+  }
+  .track-patch-sub{ font-family:'Inter',sans-serif; font-size:11.5px; color:#8a978f; line-height:1.2; }
+  .track-patch-live{ margin-left:auto; display:flex; align-items:center; gap:6px; flex:none; }
+  .track-patch-live-dot{
+    width:7px; height:7px; border-radius:50%; background:var(--green);
+    animation:trackPulse 1.8s ease-out infinite;
+  }
+  .track-patch-live-label{
+    font-family:'Oswald',sans-serif; font-size:10.5px; letter-spacing:.05em;
+    color:var(--green); text-transform:uppercase;
+  }
+  /* Franja inferior: no hay forma de saber cuánto mide el anuncio que 17TRACK mete ahí (lo sirve
+     Google Ads en vivo, cambia de tamaño), así que cualquier degradado semitransparente termina
+     dejando ver algo tarde o temprano. Por eso esta franja es 100% sólida (cero transparencia) y
+     va pegada al borde de abajo del recuadro, sin hueco: tapa toda la cola del resultado,
+     incluida la fila nativa "Copiar Detalles / Traducir" de 17TRACK (para eso ya tenés el botón
+     de acá abajo y el de "Info verificada", que llevan al historial completo en su sitio). Como
+     el recuadro ahora siempre queda a una altura fija (ver .track-result-body de arriba: nunca
+     se expande adentro de la página), esta franja siempre cae en el mismo lugar. */
+  .track-patch-bottom{
+    top:auto; bottom:0; height:var(--bottom-patch-h);
+    background:#ffffff; box-shadow:0 -10px 22px -14px rgba(0,0,0,0.18);
+    border-top:1px solid #eef1ee;
+    flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; gap:4px; padding:18px 22px;
+  }
+  .track-patch-bottom .track-patch-icon{ margin-bottom:2px; }
+  .track-patch-bottom .track-patch-text{ align-items:center; }
+  @keyframes trackPulse{
+    0%{ box-shadow:0 0 0 0 rgba(79,190,121,0.55); }
+    70%{ box-shadow:0 0 0 7px rgba(79,190,121,0); }
+    100%{ box-shadow:0 0 0 0 rgba(79,190,121,0); }
+  }
+  .track-result-footer{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:14px 16px; background:var(--surface-2); border-top:1px solid var(--line);
+  }
+  .track-result-footer-info{ display:flex; align-items:center; gap:10px; min-width:0; }
+  .track-result-footer-icon{
+    flex:none; width:30px; height:30px; border-radius:50%;
+    background:var(--green); color:#0c1610; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 4px rgba(79,190,121,0.15);
+  }
+  .track-result-footer-text{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .track-result-footer-title{
+    font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.03em;
+    font-size:12.5px; color:var(--text);
+  }
+  .track-result-footer-sub{ font-family:'Inter',sans-serif; font-size:11.5px; color:var(--text-faint); }
+  .track-result-footer-link{
+    flex:none; font-family:'Inter',sans-serif; font-weight:600; font-size:12.5px; color:#0c1610;
+    background:var(--amber); padding:9px 16px; border-radius:999px; text-decoration:none;
+    white-space:nowrap; display:inline-flex; align-items:center; gap:6px;
+    transition:filter .15s ease;
+  }
+  .track-result-footer-link:hover{ filter:brightness(1.08); }
+  .track-loading{ padding:34px 16px; text-align:center; color:var(--text-faint); font-size:13.5px; font-family:'Inter',sans-serif; }
+  .track-loading::before{ content:''; display:block; width:26px; height:26px; margin:0 auto 12px; border-radius:50%; border:3px solid rgba(0,0,0,0.12); border-top-color:var(--amber-dim); animation:trackspin .8s linear infinite; }
+  @keyframes trackspin{ to{ transform:rotate(360deg); } }
 
   .ship-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;}
   .ship-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px;}
@@ -506,6 +618,7 @@ html{scroll-behavior:smooth;}
 <button class="tab-btn" data-tab="carrito">🛒 Armar pedido</button>
 <button class="tab-btn" data-tab="comparar">Comparar precios</button>
 <button class="tab-btn" data-tab="envios">Envíos</button>
+<button class="tab-btn" data-tab="rastreo">🚚 Rastrear envío</button>
 <button class="tab-btn" data-tab="guia">Cómo comprar paso a paso</button>
 <button class="tab-btn" data-tab="preguntas">Dudas habituales</button>
 <button class="tab-btn" data-tab="ming">Pedidos especiales con Ming 💎</button>
@@ -562,6 +675,12 @@ html{scroll-behavior:smooth;}
 <p>Elegí un vendedor y agregá cada prenda con su talle, número, nombre y parche (todo opcional salvo el producto). Al final se genera un mensaje en inglés, listo para copiar y mandarle al vendedor.</p>
 <p><strong>Importante:</strong> un pedido es de un solo vendedor. Si cambiás de vendedor con prendas ya cargadas, el carrito se vacía y arrancás un pedido nuevo.</p>
 </div>
+<div class="cart-history" id="cartHistoryWrap" style="display:none;margin-top:16px;">
+<div class="section-label">Pedidos guardados</div>
+<p class="hint" style="margin:6px 0 0;">Se guardan automáticamente en este celular/navegador cuando copiás, enviás o descargás un pedido.</p>
+<div class="cart-history-list" id="cartHistoryList"></div>
+</div>
+
 <div class="field" style="max-width:360px;margin-top:14px;">
 <label for="cartVendor">Vendedor</label>
 <select id="cartVendor"></select>
@@ -647,6 +766,56 @@ html{scroll-behavior:smooth;}
 <p class="hint" style="margin-bottom:14px;">Costo de envío según cantidad de piezas por pedido. Algunos vendedores tienen tarifas separadas para Argentina, Colombia o Perú.</p>
 <div class="ship-grid" id="shipGrid"></div>
 </section>
+<section class="panel" id="panel-rastreo">
+<div class="compare-card" style="padding:20px;">
+<h2 style="margin-top:0;">🚚 Rastrear envío</h2>
+<p class="hint">Pegá tu código de seguimiento y vas a ver el estado del envío acá mismo, sin salir de la página. El resultado lo entrega 17TRACK (un servicio externo) y puede incluir algún aviso publicitario propio de ellos que no controlamos.</p>
+<div class="track-tool">
+<input id="trackingCodeInput" type="text" placeholder="Pegá tu código de seguimiento" autocomplete="off"/>
+<button class="submit-btn" id="trackingCodeBtn" type="button">🚚 Rastrear envío</button>
+</div>
+<p class="hint" id="trackingCodeHint" style="margin-top:8px;"></p>
+<div class="track-result-card" id="trackResultCard" style="display:none;">
+<div class="track-result-head">
+<span>📦 Estado del envío</span>
+<button class="mini-btn" id="trackResetBtn" type="button">✕ Nueva búsqueda</button>
+</div>
+<div class="track-result-body" id="trackResultBody">
+<div class="track-loading" id="trackLoading">Buscando el envío…</div>
+<div id="trackingResultContainer"></div>
+</div>
+<div class="track-result-footer" id="trackResultFooter" style="display:none;">
+<div class="track-result-footer-info">
+<span class="track-result-footer-icon">✓</span>
+<span class="track-result-footer-text">
+<span class="track-result-footer-title">Info verificada</span>
+<span class="track-result-footer-sub">Fuente: 17TRACK</span>
+</span>
+</div>
+</div>
+</div>
+<!-- CORREO ARGENTINO: desactivado temporalmente, a la espera del proxy embebido (ver initCorreoArgentinoTool más abajo, también comentada).
+<div class="compare-card" style="padding:20px;margin-top:16px;">
+<h2 style="margin-top:0;">📮 Correo Argentino (Origen Internacional)</h2>
+<p class="hint">Ingresá tu número de seguimiento. Correo Argentino no permite que su formulario se abra dentro de otras páginas (por seguridad, igual que hacen los bancos), así que te llevamos directo a su sitio oficial con el código ya cargado: solo hace falta tocar «Consultar» ahí.</p>
+<div class="track-tool" style="flex-wrap:wrap;">
+<input id="correoTrackingInput" type="text" placeholder="N° de seguimiento" autocomplete="off" style="flex:1 1 260px;"/>
+<button class="submit-btn" id="correoTrackingBtn" type="button">📮 Consultar</button>
+</div>
+<p class="hint" id="correoTrackingHint" style="margin-top:8px;"></p>
+<div class="track-result-card" id="correoResultCard" style="display:none;margin-top:16px;">
+<div class="track-result-head">
+<span>📮 Seguimiento Correo Argentino</span>
+<button class="mini-btn" id="correoResetBtn" type="button">✕ Nueva búsqueda</button>
+</div>
+<div style="padding:20px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+<p class="hint" style="margin:0;">Si no se abrió sola, tocá el botón:</p>
+<a id="correoTrackingLink" class="submit-btn" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">📮 Abrir en Correo Argentino</a>
+</div>
+</div>
+</div>
+-->
+</section>
 <section class="panel" id="panel-preguntas">
 <div class="compare-card" style="padding:20px;">
 <h2 style="margin-top:0;">Dudas habituales</h2>
@@ -664,7 +833,7 @@ html{scroll-behavior:smooth;}
 <div class="note" style="margin:16px 0;"><h3 style="margin-top:0;">¿Cuánto tarda el vendedor en preparar el pedido?</h3><p>Normalmente, la fabricación de las camisetas demora unos 5 días. Una vez que el vendedor despacha el pedido, el tiempo de entrega depende del servicio postal y del país de destino.</p></div>
 <div class="note" style="margin:16px 0;"><h3 style="margin-top:0;">¿Qué hago si no encuentro la camiseta que busco?</h3><p>Mandale al vendedor una imagen del modelo que querés. Hay prendas que no aparecen en los catálogos pero igualmente pueden estar disponibles para comprar.</p></div>
 <div class="note" style="margin:16px 0;"><h3 style="margin-top:0;">¿Cómo sé cuándo enviaron mi pedido?</h3><p>Los vendedores pueden tardar en responder, así que es importante tener paciencia. Una vez confirmado el pago, normalmente pasan unos 4 o 5 días hasta que envían las fotos de las prendas terminadas y el número de seguimiento. Durante ese período están preparando y confeccionando las camisetas.</p></div>
-<div class="note" style="margin:16px 0;" id="faq-seguimiento"><h3 style="margin-top:0;">¿Dónde puedo seguir el envío?</h3><p>Con el número de seguimiento podés consultar el recorrido del paquete en <a href="https://www.17track.net/es" rel="noopener" target="_blank">17TRACK</a>.</p></div>
+<div class="note" style="margin:16px 0;" id="faq-seguimiento"><h3 style="margin-top:0;">¿Dónde puedo seguir el envío?</h3><p>Andá a la pestaña <strong>🚚 Rastrear envío</strong> (arriba de todo, junto a "Envíos") y pegá tu código de seguimiento ahí: vas a ver el estado del paquete directo en la página, sin salir a 17TRACK.</p></div>
 <div class="note" style="margin:16px 0;"><h3 style="margin-top:0;">¿Qué pasa si el seguimiento todavía no aparece?</h3><p>Si ya recibiste el número de seguimiento, lo ingresaste en 17TRACK y todavía no muestra información, no te preocupes. Es normal que tarde entre 3 y 5 días en aparecer. Solo queda esperar a que el sistema se actualice.</p></div>
 </div>
 </section>
@@ -786,6 +955,7 @@ html{scroll-behavior:smooth;}
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://www.17track.net/externalcall.js"></script>
 <script>
 /* ---------------- DATA MODEL ---------------- */
 const CATS = [
@@ -862,6 +1032,10 @@ const BASE_VENDORS = [
     contacts:[{label:'WhatsApp', url:'https://wa.me/8618007855115'},{label:'Catálogo', url:'https://gesitu.x.yupoo.com/'}],
     prices:[p('Fan','10$','fan'), p('Adidas Gamer','13$','playerAdidas'), p('Nike Player','14$','playerNike'), p('Retro','15$','retro'), p('NBA','18$','nba'), p('Shorts','Fan 7$ / Player 11$'), p('Short Fan','7$','shortFan'), p('Short Player','11$','shortPlayer'), p('Medias adultos','3$','medias'), p('Medias niños','2$'), p('Kit Niños','12$','kitInfantil'), p('Kit Adultos','18$'), p('Estrella personalizada','1$'), p('Personalizada','3$','personalizacion'), p('Parche','1$','parche'), p('Talle 2XL/3XL/4XL','+1$')],
     shipping:[{label:'1–3 piezas',value:'5$'},{label:'4+ piezas',value:'Gratis'}]},
+  {id:'jack', name:'Jack',
+    contacts:[{label:'WhatsApp', url:'https://wa.me/8613428355079'},{label:'Catálogo 1', url:'https://407131796.x.yupoo.com/albums'},{label:'Catálogo 2', url:'https://baocheng3f888.x.yupoo.com/'},{label:'Catálogo Camisetas', url:'https://classic-football-fhirts052.x.yupoo.com/'},{label:'Conjuntos', url:'https://x.yupoo.com/photos/dongshanstore/categories/322329'},{label:'Botines', url:'https://x.yupoo.com/photos/mzrycm102618/albums?tab=gallery'},{label:'Rompevientos', url:'https://1215795243.x.yupoo.com/'}],
+    prices:[p('Fan','11$','fan'), p('Player Adidas','15$','playerAdidas'), p('Player Nike','15$','playerNike'), p('Retro','16$','retro'), p('Kit Infantil','13$','kitInfantil'), p('NBA','20$','nba'), p('Personalizada','3$','personalizacion'), p('Parche','1$','parche')],
+    shipping:[{label:'Desde 3 piezas',value:'Gratis'},{label:'EMS',value:'+15$'}]},
 ];
 
 /* ---------------- STATE (local to this browser only) ---------------- */
@@ -1084,12 +1258,23 @@ function renderRanking(){
   });
   const sortedGroups = Object.entries(groups).sort((a,b)=>a[1].num-b[1].num);
 
-  list.innerHTML = sortedGroups.map(([price,g])=>`
+  // Barra visual: escala cada precio entre 12% (piso visible) y 100% según el rango de precios de la categoría.
+  const nums = sortedGroups.map(([,g])=>g.num);
+  const minNum = Math.min(...nums);
+  const maxNum = Math.max(...nums);
+  const range = maxNum - minNum;
+
+  list.innerHTML = sortedGroups.map(([price,g],idx)=>{
+    const pct = range>0 ? 12 + ((g.num-minNum)/range)*88 : 100;
+    return `
     <div class="rank-item">
       <span class="rank-value" style="min-width:70px;">${price}</span>
-      <span class="rank-name" style="flex:1; text-transform:none; font-weight:400; font-family:'Inter',sans-serif; font-size:13.5px;">${g.vendors.join(', ')}</span>
-    </div>
-  `).join('');
+      <div class="rank-bar-col">
+        <div class="rank-bar-track"><div class="rank-bar-fill${idx===0?' best':''}" style="width:${pct.toFixed(0)}%"></div></div>
+        <span class="rank-name" style="text-transform:none; font-weight:400; font-family:'Inter',sans-serif; font-size:13.5px;">${g.vendors.join(', ')}</span>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 /* ---------------- LISTA DE COMPRA ---------------- */
@@ -1276,8 +1461,154 @@ function initCart(){
   if(navigator.canShare && navigator.canShare({files:[new File([''],'t.txt')]})){
     document.getElementById('cartShareBtn').style.display = 'inline-block';
   }
+  renderCartHistory();
   renderCart();
 }
+function initTrackingTool(){
+  const input = document.getElementById('trackingCodeInput');
+  const btn = document.getElementById('trackingCodeBtn');
+  const hint = document.getElementById('trackingCodeHint');
+  const resultBox = document.getElementById('trackingResultContainer');
+  const card = document.getElementById('trackResultCard');
+  const body = document.getElementById('trackResultBody');
+  const loading = document.getElementById('trackLoading');
+  const resetBtn = document.getElementById('trackResetBtn');
+  const footer = document.getElementById('trackResultFooter');
+  if(!input || !btn || !resultBox || !card || !loading) return;
+
+  // El resultado de 17TRACK viene dentro de un iframe de su propio dominio: por seguridad del
+  // navegador no podemos leer ni modificar lo que hay adentro. Eso incluye los anuncios que a
+  // veces mete 17TRACK entre los eventos del envío (los sirve Google Ads en vivo, cambian de
+  // tamaño en cada carga): no hay forma de detectarlos ni recortarlos con precisión desde
+  // afuera. Por eso el enfoque es otro:
+  // 1) El recuadro queda SIEMPRE a una altura fija (ver --track-visible-h), nunca se expande
+  //    adentro de la página — así nunca destapamos la cola del widget, que es donde vive el
+  //    anuncio y el pie nativo de 17TRACK.
+  // 2) Tapamos con una franja 100% sólida (sin transparencias) el borde inferior de ese recuadro
+  //    fijo, para curarnos en salud si el anuncio llega a asomar en esa altura visible.
+  // 3) Tapamos también el banner de la app de 17TRACK, que ese sí está siempre fijo arriba de todo.
+  // 4) El botón de abajo y el link de "Info verificada" llevan al historial COMPLETO en el sitio
+  //    de 17TRACK (pestaña nueva) — ahí sí van a ver sus anuncios, pero ya no en tu página.
+  // 5) Sandbox en el iframe para que ningún anuncio pueda secuestrar la pestaña entera.
+  const addTopPatch = ()=>{
+    if(resultBox.querySelector('.track-patch-top')) return; // ya está puesta
+    const top = document.createElement('div');
+    top.className = 'track-patch track-patch-top';
+    top.innerHTML = `
+      <span class="track-patch-icon">🚚</span>
+      <span class="track-patch-text">
+        <span class="track-patch-title">Seguimiento en vivo</span>
+        <span class="track-patch-sub">Datos actualizados en tiempo real</span>
+      </span>
+      <span class="track-patch-live">
+        <span class="track-patch-live-dot"></span>
+        <span class="track-patch-live-label">En vivo</span>
+      </span>`;
+    resultBox.appendChild(top);
+  };
+  const watchIframeLoad = ()=>{
+    const iframe = resultBox.querySelector('iframe');
+    if(iframe && !iframe.dataset.loadBound){
+      iframe.dataset.loadBound = '1';
+      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+      addTopPatch();
+      iframe.addEventListener('load', ()=>{ loading.style.display = 'none'; });
+    }
+  };
+  const observer = new MutationObserver(watchIframeLoad);
+  observer.observe(resultBox, {childList:true, subtree:true});
+
+  const resetTracking = ()=>{
+    resultBox.innerHTML = '';
+    card.style.display = 'none';
+    if(footer) footer.style.display = 'none';
+    loading.style.display = 'block';
+    input.value = '';
+    hint.textContent = '';
+    input.focus();
+  };
+
+  const goTrack = ()=>{
+    const code = input.value.trim();
+    if(!code){
+      hint.textContent = 'Pegá primero el código de seguimiento.';
+      return;
+    }
+    if(typeof YQV5 === 'undefined' || !YQV5.trackSingle){
+      hint.textContent = 'No se pudo cargar el rastreo embebido (revisá tu conexión). Podés intentar de nuevo en unos segundos.';
+      return;
+    }
+    hint.textContent = '';
+    resultBox.innerHTML = '';
+    card.style.display = 'block';
+    loading.style.display = 'block';
+    if(footer){
+      footer.style.display = 'flex';
+    }
+    YQV5.trackSingle({
+      YQ_ContainerId: 'trackingResultContainer',
+      YQ_Height: 560,
+      YQ_Fc: '0',
+      YQ_Lang: 'es',
+      YQ_Num: code
+    });
+    // Si por algo el iframe no dispara "load" (bloqueado, sin conexión), no dejamos el spinner para siempre.
+    setTimeout(()=>{ loading.style.display = 'none'; }, 8000);
+  };
+  btn.addEventListener('click', goTrack);
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') goTrack(); });
+  if(resetBtn) resetBtn.addEventListener('click', resetTracking);
+}
+/* CORREO ARGENTINO: desactivado temporalmente junto con su HTML, a la espera del proxy embebido.
+function initCorreoArgentinoTool(){
+  // Correo Argentino manda cabeceras (X-Frame-Options / CSP frame-ancestors) que bloquean que su
+  // formulario se cargue en un <iframe> de otro dominio: por eso el navegador mostraba "rechazó la
+  // conexión". Es un bloqueo del lado de ellos, no hay forma de embeberlo desde acá. En su lugar,
+  // abrimos su sitio oficial en una pestaña nueva con el código ya cargado en la URL, y dejamos un
+  // botón de respaldo por si el navegador bloqueó la ventana emergente.
+  const input = document.getElementById('correoTrackingInput');
+  const btn = document.getElementById('correoTrackingBtn');
+  const hint = document.getElementById('correoTrackingHint');
+  const card = document.getElementById('correoResultCard');
+  const link = document.getElementById('correoTrackingLink');
+  const resetBtn = document.getElementById('correoResetBtn');
+  if(!input || !btn || !hint || !card || !link) return;
+
+  const goCorreo = ()=>{
+    const code = input.value.trim();
+    if(!code){
+      hint.textContent = 'Pegá primero el código de seguimiento.';
+      input.focus();
+      return;
+    }
+
+    const url = 'https://www.correoargentino.com.ar/formularios/oidn?numero=' + encodeURIComponent(code);
+    link.href = url;
+    card.style.display = 'block';
+
+    const win = window.open(url, '_blank', 'noopener,noreferrer');
+    if(win){
+      hint.textContent = 'Se abrió una pestaña de Correo Argentino con tu código ya cargado. Solo falta tocar «Consultar» ahí.';
+    } else {
+      hint.textContent = 'El navegador bloqueó la pestaña emergente. Tocá el botón de abajo para abrirla vos.';
+    }
+    card.scrollIntoView({behavior:'smooth', block:'start'});
+  };
+
+  const resetCorreo = ()=>{
+    card.style.display = 'none';
+    link.href = '#';
+    input.value = '';
+    hint.textContent = '';
+    input.focus();
+  };
+
+  btn.addEventListener('click', goCorreo);
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') goCorreo(); });
+  if(resetBtn) resetBtn.addEventListener('click', resetCorreo);
+}
+*/
+
 function onCartVendorChange(e){
   const newVendorId = e.target.value;
   const wrap = document.getElementById('cartItems');
@@ -1289,7 +1620,7 @@ function onCartVendorChange(e){
   cartVendorId = newVendorId;
   renderCart();
 }
-function addCartItem(){
+function addCartItem(prefill){
   if(!cartVendorId){
     showToast('Primero elegí un vendedor para este pedido.', 'error');
     return;
@@ -1361,6 +1692,19 @@ function addCartItem(){
     updateCartItemPreview(row);
     renderCart();
   });
+  // Si viene de "Repetir pedido" (historial), completamos los campos con los datos guardados.
+  if(prefill){
+    if(prefill.key) row.querySelector('.cart-product').value = prefill.key;
+    row.querySelector('.cart-qty').value = prefill.qty || 1;
+    row.querySelector('.cart-size').value = prefill.size || '';
+    row.querySelector('.cart-number').value = prefill.number || '';
+    row.querySelector('.cart-name').value = prefill.name || '';
+    row.querySelector('.cart-patch').value = prefill.patch || '';
+    if(prefill.image){
+      row.querySelector('.cart-image').value = prefill.image;
+      updateCartItemPreview(row);
+    }
+  }
   renderCart();
 }
 function isDirectImageUrl(url){
@@ -1497,6 +1841,77 @@ function copyCartOrder(){
   }else{
     try{ document.execCommand('copy'); done(); }catch(e){}
   }
+  recordCurrentOrderToHistory();
+}
+
+/* ---------------- HISTORIAL DE PEDIDOS (localStorage) ---------------- */
+const CART_HISTORY_KEY = 'camisetasPedidosGuardados_v1';
+function loadCartHistory(){
+  try{ return JSON.parse(localStorage.getItem(CART_HISTORY_KEY)) || []; }
+  catch(e){ return []; }
+}
+function saveCartHistoryList(list){
+  try{ localStorage.setItem(CART_HISTORY_KEY, JSON.stringify(list.slice(0,15))); }
+  catch(e){ /* almacenamiento local lleno o bloqueado: seguimos sin romper el flujo */ }
+}
+let lastHistorySaveAt = 0;
+function recordCurrentOrderToHistory(){
+  const vendor = BASE_VENDORS.find(v=>v.id===cartVendorId);
+  const items = getCartItems();
+  if(!vendor || !items.length) return;
+  // Evita un doble registro si dos acciones (ej: copiar + descargar PDF) se disparan casi en el mismo instante.
+  const now = Date.now();
+  if(now - lastHistorySaveAt < 1200) return;
+  lastHistorySaveAt = now;
+  const cleanItems = items.map(it=>({key:it.key, qty:it.qty, size:it.size, number:it.number, name:it.name, patch:it.patch, image:it.image}));
+  const list = loadCartHistory();
+  list.unshift({id:'ord'+now, vendorId:vendor.id, vendorName:vendor.name, date:new Date().toISOString(), items:cleanItems});
+  saveCartHistoryList(list);
+  renderCartHistory();
+}
+function renderCartHistory(){
+  const wrap = document.getElementById('cartHistoryWrap');
+  const listEl = document.getElementById('cartHistoryList');
+  if(!wrap || !listEl) return;
+  const list = loadCartHistory();
+  if(!list.length){ wrap.style.display='none'; listEl.innerHTML=''; return; }
+  wrap.style.display = 'block';
+  listEl.innerHTML = list.map(entry=>{
+    const totalQty = entry.items.reduce((s,it)=>s+it.qty,0);
+    const dateLabel = new Date(entry.date).toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
+    return `<div class="cart-history-item">
+      <div class="cart-history-info"><strong>${escapeHtml(entry.vendorName)}</strong><br>${entry.items.length} prenda${entry.items.length>1?'s':''} · ${totalQty} unidad${totalQty>1?'es':''} · ${dateLabel}</div>
+      <div class="cart-history-actions">
+        <button class="mini-btn cart-history-load" type="button" data-histid="${entry.id}">↺ Repetir pedido</button>
+        <button class="mini-btn cart-history-del" type="button" data-histid="${entry.id}" title="Eliminar">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+  listEl.querySelectorAll('.cart-history-load').forEach(btn=>btn.addEventListener('click', ()=>loadOrderFromHistory(btn.dataset.histid)));
+  listEl.querySelectorAll('.cart-history-del').forEach(btn=>btn.addEventListener('click', ()=>deleteOrderFromHistory(btn.dataset.histid)));
+}
+function deleteOrderFromHistory(id){
+  saveCartHistoryList(loadCartHistory().filter(e=>e.id!==id));
+  renderCartHistory();
+}
+function loadOrderFromHistory(id){
+  const entry = loadCartHistory().find(e=>e.id===id);
+  if(!entry) return;
+  if(!BASE_VENDORS.some(v=>v.id===entry.vendorId)){
+    showToast('El vendedor de este pedido ya no está en la lista.', 'error');
+    return;
+  }
+  const wrap = document.getElementById('cartItems');
+  if(wrap.children.length && cartVendorId && cartVendorId !== entry.vendorId){
+    const ok = confirm('Ya tenés prendas cargadas de otro vendedor. Repetir este pedido vacía el carrito actual. ¿Continuar?');
+    if(!ok) return;
+  }
+  wrap.innerHTML = '';
+  cartVendorId = entry.vendorId;
+  document.getElementById('cartVendor').value = entry.vendorId;
+  entry.items.forEach(it=>addCartItem(it));
+  renderCart();
+  showToast('Pedido cargado ✅ — revisá los datos antes de enviarlo.');
 }
 function sendCartOrderWhatsapp(){
   const vendor = BASE_VENDORS.find(v=>v.id===cartVendorId);
@@ -1513,6 +1928,7 @@ function sendCartOrderWhatsapp(){
   const base = waContact.url.split('?')[0];
   const url = `${base}?text=${encodeURIComponent(ta.value)}`;
   window.open(url, '_blank', 'noopener');
+  recordCurrentOrderToHistory();
 }
 async function dataUrlToFile(dataUrl, filename){
   const res = await fetch(dataUrl);
@@ -1705,6 +2121,7 @@ async function downloadCartOrderPdf(){
   doc.text(`Total items: ${totalQty}`, margin, y);
 
   doc.save(`pedido-${vendor.id}.pdf`);
+  recordCurrentOrderToHistory();
 }
 
 function renderOrderComparison(){
@@ -2075,6 +2492,8 @@ setTimeout(hideLoadingOverlay, 4000);
     renderShipping();
     initSmartBuyer();
     initCart();
+    initTrackingTool();
+    // initCorreoArgentinoTool(); // desactivado temporalmente, ver comentario arriba
     renderOrderComparison();
   }catch(err){
     console.error('Error al iniciar la página:', err);
