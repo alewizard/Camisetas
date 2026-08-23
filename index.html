@@ -175,6 +175,7 @@
   /* Contenido de los tutoriales: misma legibilidad que la sección Ming */
   #panel-guia .compare-card,
   #panel-preguntas .compare-card,
+  #panel-legal .compare-card,
   #panel-matchday .compare-card,
   #panel-buscar .compare-card{
     font-family:'Inter',sans-serif;
@@ -182,6 +183,7 @@
   }
   #panel-guia .compare-card > h2,
   #panel-preguntas .compare-card > h2,
+  #panel-legal .compare-card > h2,
   #panel-matchday .compare-card > h2,
   #panel-buscar .compare-card > h2{
     font-family:'Oswald',sans-serif;
@@ -192,6 +194,7 @@
   }
   #panel-guia .note,
   #panel-preguntas .note,
+  #panel-legal .note,
   #panel-matchday .note,
   #panel-buscar .note{
     font-family:'Inter',sans-serif;
@@ -206,6 +209,7 @@
   }
   #panel-guia .note h3,
   #panel-preguntas .note h3,
+  #panel-legal .note h3,
   #panel-matchday .note h3{
     font-family:'Oswald',sans-serif;
     color:var(--text);
@@ -215,8 +219,10 @@
   }
   #panel-guia .note p,
   #panel-preguntas .note p,
+  #panel-legal .note p,
   #panel-guia .note li,
   #panel-preguntas .note li,
+  #panel-legal .note li,
   #panel-matchday .note p,
   #panel-matchday .note li,
   #panel-buscar .note p,
@@ -228,10 +234,12 @@
   }
   #panel-guia .note a,
   #panel-preguntas .note a,
+  #panel-legal .note a,
   #panel-matchday .note a,
   #panel-buscar .note a{color:var(--amber);}
   #panel-guia strong,
   #panel-preguntas strong,
+  #panel-legal strong,
   #panel-matchday strong,
   #panel-buscar strong{color:var(--text);}
   details summary{cursor:pointer; font-size:12px; color:var(--amber); font-family:'JetBrains Mono',monospace; margin-top:2px;}
@@ -243,7 +251,7 @@
   .quick-nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px;}
   .quick-nav a{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--text);text-decoration:none;font-size:12px;font-weight:600;transition:.15s ease;}
   .quick-nav a:hover{border-color:var(--amber);color:var(--amber);transform:translateY(-1px);}
-  #panel-guia .note,#panel-preguntas .note,#panel-ming .note,#panel-matchday .note,#panel-buscar .note{box-shadow:var(--shadow-sm);}
+  #panel-guia .note,#panel-preguntas .note,#panel-legal .note,#panel-ming .note,#panel-matchday .note,#panel-buscar .note{box-shadow:var(--shadow-sm);}
   #panel-guia .note{position:relative;padding-left:20px;}
   #panel-guia .note h3{display:flex;align-items:center;gap:9px;}
   #panel-guia .note h3::before{content:'✓';display:inline-flex;align-items:center;justify-content:center;width:25px;height:25px;border-radius:50%;background:rgba(242,183,5,.13);border:1px solid rgba(242,183,5,.35);color:var(--amber);font-family:'JetBrains Mono',monospace;font-size:12px;flex:none;}
@@ -620,6 +628,7 @@ html{scroll-behavior:smooth;}
 <button class="tab-btn" data-tab="preguntas">Dudas habituales</button>
 <button class="tab-btn" data-tab="ming">Pedidos especiales con Ming 💎</button>
 <button class="tab-btn" data-tab="matchday">🏆 Matchday Mundial</button>
+<button class="tab-btn" data-tab="legal">📄 Términos de uso</button>
 <button class="edit-toggle" id="themeToggleBtn" title="Cambiar tema claro/oscuro">🌙 Oscuro</button>
 </nav>
 <main>
@@ -643,6 +652,7 @@ html{scroll-behavior:smooth;}
 </div>
 <p class="hint" id="resultsCount" style="margin:-6px 0 14px;"></p>
 <div class="grid" id="vendorGrid"></div>
+<p class="hint" style="margin-top:16px; text-align:center;">📌 Esta página es un <strong>comparador informativo, no una tienda</strong>: no vendemos, no procesamos pagos ni somos parte de ninguna transacción. Todo se coordina directo con el vendedor. <a href="#" onclick="document.querySelector('[data-tab=&quot;legal&quot;]').click(); return false;">Ver términos de uso</a>.</p>
 </section>
 <section class="panel" id="panel-buscar">
 <div class="compare-card" style="padding:20px;">
@@ -671,6 +681,7 @@ html{scroll-behavior:smooth;}
 <div class="note">
 <p>Elegí un vendedor y agregá cada prenda con su talle, número, nombre y parche (todo opcional salvo el producto). Al final se genera un mensaje en inglés, listo para copiar y mandarle al vendedor.</p>
 <p><strong>Importante:</strong> un pedido es de un solo vendedor. Si cambiás de vendedor con prendas ya cargadas, el carrito se vacía y arrancás un pedido nuevo.</p>
+<p><strong>Esta página no procesa pagos.</strong> El carrito solo arma el mensaje del pedido para enviárselo al vendedor por WhatsApp o Telegram. El pago, la moneda, el método y cualquier acuerdo económico se coordinan directamente con el vendedor, fuera de esta página.</p>
 </div>
 <div class="cart-history" id="cartHistoryWrap" style="display:none;margin-top:16px;">
 <div class="section-label">Pedidos guardados</div>
@@ -816,7 +827,7 @@ html{scroll-behavior:smooth;}
 <div class="note" style="margin:16px 0;"><h3 style="margin-top:0;">¿Cómo sé cuándo enviaron mi pedido?</h3><p>Los vendedores pueden tardar en responder, así que es importante tener paciencia. Una vez confirmado el pago, normalmente pasan unos 4 o 5 días hasta que envían las fotos de las prendas terminadas y el número de seguimiento. Durante ese período están preparando y confeccionando las camisetas.</p></div>
 <div class="note" style="margin:16px 0;" id="faq-seguimiento"><h3 style="margin-top:0;">¿Dónde puedo seguir el envío?</h3><p>Andá a la pestaña <strong>🚚 Rastrear envío</strong> (arriba de todo, junto a "Envíos") y pegá tu código de seguimiento ahí: vas a ver el estado del paquete directo en la página, sin salir a 17TRACK.</p></div>
 <div class="note" style="margin:16px 0;"><h3 style="margin-top:0;">¿Qué pasa si el seguimiento todavía no aparece?</h3><p>Si ya recibiste el número de seguimiento, lo ingresaste en 17TRACK y todavía no muestra información, no te preocupes. Es normal que tarde entre 3 y 5 días en aparecer. Solo queda esperar a que el sistema se actualice.</p></div>
-<div class="note" style="margin:16px 0;" id="faq-legal"><h3 style="margin-top:0;">Aviso legal</h3><p>Esta página tiene fines exclusivamente informativos, sin fines de lucro, y funciona como recurso de referencia para una comunidad. No vendemos, comercializamos, intermediamos comercialmente ni obtenemos beneficio económico de ningún producto, catálogo o vendedor listado acá. No somos parte de ninguna transacción: la compra, el pago, el envío y cualquier acuerdo se realizan directamente y exclusivamente entre el comprador y el vendedor, bajo su propia responsabilidad. No garantizamos la calidad, autenticidad, legalidad, disponibilidad, entrega ni cumplimiento de ningún producto o vendedor mencionado, y no respondemos por reclamos, daños, pérdidas o inconvenientes derivados de esas transacciones. Las marcas, escudos, nombres de clubes, selecciones y logos mencionados pertenecen a sus respectivos titulares; esta página no está afiliada, patrocinada ni avalada por ninguna marca, club, federación o liga. Cada usuario es responsable de verificar la normativa de importación y aduana vigente en su país antes de realizar cualquier compra.</p><p>Esta página no tiene ninguna relación societaria, laboral, de representación ni de mandato con los vendedores listados; que un vendedor aparezca acá no implica que verifiquemos ni avalemos su legitimidad, cumplimiento o cualquier otro aspecto de su actividad. No nos hacemos responsables por el contenido, funcionamiento, disponibilidad ni políticas de sitios y servicios de terceros enlazados desde esta página (WhatsApp, Telegram, catálogos externos, herramientas de rastreo, sitios de correos, etc.). El contacto con cualquier vendedor y toda transacción posterior son decisión exclusiva y bajo entera responsabilidad de quien la realiza. El contenido de esta página puede modificarse, actualizarse o eliminarse sin previo aviso. Ante cualquier reclamo de una marca, club, federación o titular de derechos, el contenido correspondiente será retirado a la brevedad.</p></div>
+<div class="note" style="margin:16px 0;" id="faq-legal"><h3 style="margin-top:0;">Aviso legal</h3><p>Esta página es un comparador informativo, sin fines de lucro. El detalle completo de los términos de uso, la política de privacidad y el aviso legal está en la pestaña <a href="#" onclick="document.querySelector('[data-tab=&quot;legal&quot;]').click(); return false;">📄 Términos de uso</a>.</p></div>
 </div>
 </section>
 <section class="panel" id="panel-ming">
@@ -922,6 +933,32 @@ html{scroll-behavior:smooth;}
 <h3 style="margin-top:0;">7. Esperá la entrega en tu domicilio</h3>
 <p>Con el aviso, la declaración y el pago realizados, solo queda esperar a que el correo entregue el paquete en tu domicilio. Aunque al principio parezca un procedimiento largo, en realidad se resume en estos 7 pasos.</p>
 <p>Además, el pago cuenta con la protección correspondiente de PayPal o AliExpress. Si te surge alguna duda durante el proceso, podés realizar tu consulta por Telegram.</p>
+</div>
+</div>
+</section>
+<section class="panel" id="panel-legal">
+<div class="compare-card" style="padding:20px;">
+<h2 style="margin-top:0;">📄 Términos de uso</h2>
+<p class="hint" style="margin:-6px 0 16px;">Última actualización: agosto de 2026</p>
+<div class="note" style="margin:16px 0;">
+<h3 style="margin-top:0;">Qué es esta página</h3>
+<p>Esta página es un <strong>comparador informativo</strong>, sin fines de lucro, que funciona como recurso de referencia para una comunidad. No vendemos, comercializamos, intermediamos comercialmente ni obtenemos beneficio económico de ningún producto, catálogo o vendedor listado acá.</p>
+</div>
+<div class="note" style="margin:16px 0;">
+<h3 style="margin-top:0;">No somos parte de la transacción ni procesamos pagos</h3>
+<p>No somos parte de ninguna transacción: la compra, el pago, el envío y cualquier acuerdo se realizan directamente y exclusivamente entre el comprador y el vendedor, bajo su propia responsabilidad. Esta página <strong>no procesa pagos en ningún momento</strong>: el carrito de la pestaña "Armar pedido" solo genera un mensaje de texto para enviar por WhatsApp o Telegram; el pago se coordina después, directo con el vendedor, fuera de esta página.</p>
+<p>No garantizamos la calidad, autenticidad, legalidad, disponibilidad, entrega ni cumplimiento de ningún producto o vendedor mencionado, y no respondemos por reclamos, daños, pérdidas o inconvenientes derivados de esas transacciones. Cada usuario es responsable de verificar la normativa de importación y aduana vigente en su país antes de realizar cualquier compra.</p>
+</div>
+<div class="note" style="margin:16px 0;">
+<h3 style="margin-top:0;">Marcas y terceros</h3>
+<p>Las marcas, escudos, nombres de clubes, selecciones y logos mencionados pertenecen a sus respectivos titulares; esta página no está afiliada, patrocinada ni avalada por ninguna marca, club, federación o liga. Esta página no tiene ninguna relación societaria, laboral, de representación ni de mandato con los vendedores listados; que un vendedor aparezca acá no implica que verifiquemos ni avalemos su legitimidad, cumplimiento o cualquier otro aspecto de su actividad.</p>
+<p>No nos hacemos responsables por el contenido, funcionamiento, disponibilidad ni políticas de sitios y servicios de terceros enlazados desde esta página (WhatsApp, Telegram, catálogos externos, herramientas de rastreo, sitios de correos, etc.). El contacto con cualquier vendedor y toda transacción posterior son decisión exclusiva y bajo entera responsabilidad de quien la realiza.</p>
+<p>Ante cualquier reclamo de una marca, club, federación o titular de derechos, el contenido correspondiente será retirado a la brevedad. El contenido de esta página puede modificarse, actualizarse o eliminarse sin previo aviso.</p>
+</div>
+<div class="note" style="margin:16px 0;">
+<h3 style="margin-top:0;">Privacidad y datos guardados en tu navegador</h3>
+<p>Esta página no tiene servidor propio ni base de datos: no recolectamos, almacenamos ni tenemos acceso a ningún dato tuyo. Algunas funciones (favoritos, tema claro/oscuro, historial de pedidos armados, último código de rastreo consultado) guardan información únicamente en el <strong>localStorage de tu navegador</strong>, es decir, en tu propio celular o computadora. Esa información nunca se envía a ningún servidor nuestro, no la vemos ni la recibimos, y queda ahí hasta que la borrés vos (por ejemplo, limpiando los datos del sitio en el navegador o usando las opciones de borrado dentro de la página, cuando estén disponibles).</p>
+<p>El campo de rastreo de la pestaña "🚚 Rastrear envío" usa el widget oficial de 17TRACK, que corre dentro de un iframe de su propio dominio; el código que consultes ahí lo procesa 17TRACK según sus propios términos, no los nuestros.</p>
 </div>
 </div>
 </section>
