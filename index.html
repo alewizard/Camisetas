@@ -332,9 +332,6 @@
   .track-tool{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
   .track-tool input{ flex:1; min-width:180px; }
   .track-result-card{ margin-top:16px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow-sm); }
-  .correo-embed-wrap{ background:#fff; min-height:720px; overflow:hidden; }
-  #correoTrackingFrame{ display:block; width:100%; height:720px; border:0; background:#fff; }
-
   .track-result-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 16px; background:var(--surface-2); border-bottom:1px solid var(--line); font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.02em; font-size:13.5px; color:var(--text); }
   /* El iframe de 17TRACK es de otro dominio: no podemos leer ni tocar lo que hay adentro. Eso
      incluye los anuncios que a veces mete entre los eventos del envío (los sirve Google Ads en
@@ -465,7 +462,7 @@
 
   .empty-state{ grid-column:1/-1; text-align:center; padding:50px 20px; color:var(--text-faint); font-family:'JetBrains Mono',monospace; font-size:13px; border:1px dashed var(--line); border-radius:var(--radius); }
 
-  footer{max-width:1100px; margin:40px auto 0; padding:0 20px; color:var(--text-faint); font-size:12px; font-family:'JetBrains Mono',monospace;}
+  footer{max-width:1100px; margin:40px auto 0; padding:0 20px 0; color:var(--text-faint); font-size:12px; font-family:'JetBrains Mono',monospace;}
 
   @media (max-width:640px){ .row2{grid-template-columns:1fr;} }
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
@@ -507,8 +504,8 @@ html{scroll-behavior:smooth;}
 #panel-guia .note,#panel-preguntas .note,#panel-ming .note,#panel-matchday .note{scroll-margin-top:90px;}
 .tutorial-step-actions{display:flex;justify-content:flex-end;margin-top:12px;}
 .tutorial-step-actions a{color:var(--text);text-decoration:none;font-weight:700;}
-.back-top{position:fixed;right:18px;bottom:18px;z-index:1000;display:none;width:46px;height:46px;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--text);font-size:20px;font-weight:700;box-shadow:var(--shadow-sm);cursor:pointer;}
-.back-top.show{display:block;}
+.back-top{position:fixed;right:18px;bottom:18px;z-index:1000;display:none;align-items:center;justify-content:center;width:46px;height:46px;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--text);font-size:20px;font-weight:700;box-shadow:var(--shadow-sm);cursor:pointer;}
+.back-top.show{display:flex;}
 @media (max-width:700px){
   .quick-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
   .quick-nav a{width:100%;box-sizing:border-box;font-size:.92rem;padding:9px 8px;}
@@ -794,33 +791,17 @@ html{scroll-behavior:smooth;}
 </div>
 </div>
 </div>
-<!-- CORREO ARGENTINO: desactivado temporalmente, a la espera del proxy embebido (ver initCorreoArgentinoTool más abajo, también comentada).
 <div class="compare-card" style="padding:20px;margin-top:16px;">
 <h2 style="margin-top:0;">📮 Correo Argentino (Origen Internacional)</h2>
-<p class="hint">Ingresá tu número de seguimiento. Correo Argentino no permite que su formulario se abra dentro de otras páginas (por seguridad, igual que hacen los bancos), así que te llevamos directo a su sitio oficial con el código ya cargado: solo hace falta tocar «Consultar» ahí.</p>
-<div class="track-tool" style="flex-wrap:wrap;">
-<input id="correoTrackingInput" type="text" placeholder="N° de seguimiento" autocomplete="off" style="flex:1 1 260px;"/>
-<button class="submit-btn" id="correoTrackingBtn" type="button">📮 Consultar</button>
+<p class="hint">Correo Argentino no permite mostrar su formulario de rastreo dentro de otras páginas (lo bloquea por seguridad), así que no se puede embeber directamente acá. Tocá el botón para abrirlo — es el formulario oficial de Track &amp; Trace para Origen Internacional → Destino Nacional.</p>
+<a href="https://www.correoargentino.com.ar/formularios/oidn" rel="noopener" target="_blank" class="submit-btn" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;margin-top:6px;">📮 Abrir formulario de Correo Argentino ↗</a>
 </div>
-<p class="hint" id="correoTrackingHint" style="margin-top:8px;"></p>
-<div class="track-result-card" id="correoResultCard" style="display:none;margin-top:16px;">
-<div class="track-result-head">
-<span>📮 Seguimiento Correo Argentino</span>
-<button class="mini-btn" id="correoResetBtn" type="button">✕ Nueva búsqueda</button>
-</div>
-<div style="padding:20px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
-<p class="hint" style="margin:0;">Si no se abrió sola, tocá el botón:</p>
-<a id="correoTrackingLink" class="submit-btn" href="#" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">📮 Abrir en Correo Argentino</a>
-</div>
-</div>
-</div>
--->
 </section>
 <section class="panel" id="panel-preguntas">
 <div class="compare-card" style="padding:20px;">
 <h2 style="margin-top:0;">Dudas habituales</h2>
 <div class="tutorial-intro"><p>Acá encontrás respuestas rápidas sobre talles, versiones, personalización, pagos, envíos, impuestos y seguimiento.</p></div>
-<div class="quick-nav"><a href="#faq-talles">👕 Talles</a><a href="#faq-envios">📦 Envíos</a><a href="#faq-pagos">💳 Pagos</a><a href="#faq-seguimiento">🚚 Seguimiento</a></div>
+<div class="quick-nav"><a href="#faq-talles">👕 Talles</a><a href="#faq-envios">📦 Envíos</a><a href="#faq-pagos">💳 Pagos</a><a href="#faq-seguimiento">🚚 Seguimiento</a><a href="#faq-legal">⚖️ Aviso legal</a></div>
 <div class="note" style="margin:16px 0;" id="faq-envios"><h3 style="margin-top:0;">¿A qué países realizan envíos y cuánto tarda en llegar?</h3><ul style="line-height:1.7;"><li>Argentina: 35/60 días.</li><li>Colombia, Perú y Chile: 25/35 días.</li><li>Europa: 10/15 días.</li><li>Estados Unidos y México: 10/15 días.</li><li>Ecuador, Uruguay y Venezuela: courier vía USA.</li></ul></div>
 <div class="note" style="margin:16px 0;" id="faq-talles"><h3 style="margin-top:0;">¿Cómo puedo elegir el talle correcto?</h3><ul style="line-height:1.7;"><li><strong>Versión Fan:</strong> elegí tu talle habitual.</li><li><strong>Versión Player:</strong> se recomienda uno o dos talles más, según tu contextura.</li><li><strong>Versión Retro:</strong> no está disponible en Player; podés elegir tu talle habitual o uno más.</li></ul></div>
 <div class="note" style="margin:16px 0;"><h3 style="margin-top:0;">¿Cuál es la diferencia entre Fan y Player?</h3><p>La versión Player está confeccionada con tela de juego y tiene un ajuste más ceñido. Además, incorpora tramas y los escudos son siempre estampados. Ambas versiones ofrecen muy buena calidad; la elección depende principalmente del estilo que prefieras.</p></div>
@@ -835,6 +816,7 @@ html{scroll-behavior:smooth;}
 <div class="note" style="margin:16px 0;"><h3 style="margin-top:0;">¿Cómo sé cuándo enviaron mi pedido?</h3><p>Los vendedores pueden tardar en responder, así que es importante tener paciencia. Una vez confirmado el pago, normalmente pasan unos 4 o 5 días hasta que envían las fotos de las prendas terminadas y el número de seguimiento. Durante ese período están preparando y confeccionando las camisetas.</p></div>
 <div class="note" style="margin:16px 0;" id="faq-seguimiento"><h3 style="margin-top:0;">¿Dónde puedo seguir el envío?</h3><p>Andá a la pestaña <strong>🚚 Rastrear envío</strong> (arriba de todo, junto a "Envíos") y pegá tu código de seguimiento ahí: vas a ver el estado del paquete directo en la página, sin salir a 17TRACK.</p></div>
 <div class="note" style="margin:16px 0;"><h3 style="margin-top:0;">¿Qué pasa si el seguimiento todavía no aparece?</h3><p>Si ya recibiste el número de seguimiento, lo ingresaste en 17TRACK y todavía no muestra información, no te preocupes. Es normal que tarde entre 3 y 5 días en aparecer. Solo queda esperar a que el sistema se actualice.</p></div>
+<div class="note" style="margin:16px 0;" id="faq-legal"><h3 style="margin-top:0;">Aviso legal</h3><p>Esta página tiene fines exclusivamente informativos, sin fines de lucro, y funciona como recurso de referencia para una comunidad. No vendemos, comercializamos, intermediamos comercialmente ni obtenemos beneficio económico de ningún producto, catálogo o vendedor listado acá. No somos parte de ninguna transacción: la compra, el pago, el envío y cualquier acuerdo se realizan directamente y exclusivamente entre el comprador y el vendedor, bajo su propia responsabilidad. No garantizamos la calidad, autenticidad, legalidad, disponibilidad, entrega ni cumplimiento de ningún producto o vendedor mencionado, y no respondemos por reclamos, daños, pérdidas o inconvenientes derivados de esas transacciones. Las marcas, escudos, nombres de clubes, selecciones y logos mencionados pertenecen a sus respectivos titulares; esta página no está afiliada, patrocinada ni avalada por ninguna marca, club, federación o liga. Cada usuario es responsable de verificar la normativa de importación y aduana vigente en su país antes de realizar cualquier compra.</p><p>Esta página no tiene ninguna relación societaria, laboral, de representación ni de mandato con los vendedores listados; que un vendedor aparezca acá no implica que verifiquemos ni avalemos su legitimidad, cumplimiento o cualquier otro aspecto de su actividad. No nos hacemos responsables por el contenido, funcionamiento, disponibilidad ni políticas de sitios y servicios de terceros enlazados desde esta página (WhatsApp, Telegram, catálogos externos, herramientas de rastreo, sitios de correos, etc.). El contacto con cualquier vendedor y toda transacción posterior son decisión exclusiva y bajo entera responsabilidad de quien la realiza. El contenido de esta página puede modificarse, actualizarse o eliminarse sin previo aviso. Ante cualquier reclamo de una marca, club, federación o titular de derechos, el contenido correspondiente será retirado a la brevedad.</p></div>
 </div>
 </section>
 <section class="panel" id="panel-ming">
@@ -1032,10 +1014,6 @@ const BASE_VENDORS = [
     contacts:[{label:'WhatsApp', url:'https://wa.me/8618007855115'},{label:'Catálogo', url:'https://gesitu.x.yupoo.com/'}],
     prices:[p('Fan','10$','fan'), p('Adidas Gamer','13$','playerAdidas'), p('Nike Player','14$','playerNike'), p('Retro','15$','retro'), p('NBA','18$','nba'), p('Shorts','Fan 7$ / Player 11$'), p('Short Fan','7$','shortFan'), p('Short Player','11$','shortPlayer'), p('Medias adultos','3$','medias'), p('Medias niños','2$'), p('Kit Niños','12$','kitInfantil'), p('Kit Adultos','18$'), p('Estrella personalizada','1$'), p('Personalizada','3$','personalizacion'), p('Parche','1$','parche'), p('Talle 2XL/3XL/4XL','+1$')],
     shipping:[{label:'1–3 piezas',value:'5$'},{label:'4+ piezas',value:'Gratis'}]},
-  {id:'jack', name:'Jack',
-    contacts:[{label:'WhatsApp', url:'https://wa.me/8613428355079'},{label:'Catálogo 1', url:'https://407131796.x.yupoo.com/albums'},{label:'Catálogo 2', url:'https://baocheng3f888.x.yupoo.com/'},{label:'Catálogo Camisetas', url:'https://classic-football-fhirts052.x.yupoo.com/'},{label:'Conjuntos', url:'https://x.yupoo.com/photos/dongshanstore/categories/322329'},{label:'Botines', url:'https://x.yupoo.com/photos/mzrycm102618/albums?tab=gallery'},{label:'Rompevientos', url:'https://1215795243.x.yupoo.com/'}],
-    prices:[p('Fan','11$','fan'), p('Player Adidas','15$','playerAdidas'), p('Player Nike','15$','playerNike'), p('Retro','16$','retro'), p('Kit Infantil','13$','kitInfantil'), p('NBA','20$','nba'), p('Personalizada','3$','personalizacion'), p('Parche','1$','parche')],
-    shipping:[{label:'Desde 3 piezas',value:'Gratis'},{label:'EMS',value:'+15$'}]},
 ];
 
 /* ---------------- STATE (local to this browser only) ---------------- */
@@ -1476,6 +1454,17 @@ function initTrackingTool(){
   const footer = document.getElementById('trackResultFooter');
   if(!input || !btn || !resultBox || !card || !loading) return;
 
+  // Recuerda el último código consultado para no tener que pegarlo de nuevo cada vez
+  // que se entra a la pestaña.
+  const LAST_CODE_KEY = 'ca_last_tracking_code';
+  try{
+    const savedCode = localStorage.getItem(LAST_CODE_KEY);
+    if(savedCode && !input.value){
+      input.value = savedCode;
+      hint.textContent = 'Último código consultado — tocá "Rastrear" para actualizarlo.';
+    }
+  }catch(e){ /* localStorage no disponible (modo privado, etc.) */ }
+
   // El resultado de 17TRACK viene dentro de un iframe de su propio dominio: por seguridad del
   // navegador no podemos leer ni modificar lo que hay adentro. Eso incluye los anuncios que a
   // veces mete 17TRACK entre los eventos del envío (los sirve Google Ads en vivo, cambian de
@@ -1525,6 +1514,7 @@ function initTrackingTool(){
     loading.style.display = 'block';
     input.value = '';
     hint.textContent = '';
+    try{ localStorage.removeItem(LAST_CODE_KEY); }catch(e){}
     input.focus();
   };
 
@@ -1539,6 +1529,7 @@ function initTrackingTool(){
       return;
     }
     hint.textContent = '';
+    try{ localStorage.setItem(LAST_CODE_KEY, code); }catch(e){}
     resultBox.innerHTML = '';
     card.style.display = 'block';
     loading.style.display = 'block';
@@ -1559,56 +1550,6 @@ function initTrackingTool(){
   input.addEventListener('keydown', e=>{ if(e.key==='Enter') goTrack(); });
   if(resetBtn) resetBtn.addEventListener('click', resetTracking);
 }
-/* CORREO ARGENTINO: desactivado temporalmente junto con su HTML, a la espera del proxy embebido.
-function initCorreoArgentinoTool(){
-  // Correo Argentino manda cabeceras (X-Frame-Options / CSP frame-ancestors) que bloquean que su
-  // formulario se cargue en un <iframe> de otro dominio: por eso el navegador mostraba "rechazó la
-  // conexión". Es un bloqueo del lado de ellos, no hay forma de embeberlo desde acá. En su lugar,
-  // abrimos su sitio oficial en una pestaña nueva con el código ya cargado en la URL, y dejamos un
-  // botón de respaldo por si el navegador bloqueó la ventana emergente.
-  const input = document.getElementById('correoTrackingInput');
-  const btn = document.getElementById('correoTrackingBtn');
-  const hint = document.getElementById('correoTrackingHint');
-  const card = document.getElementById('correoResultCard');
-  const link = document.getElementById('correoTrackingLink');
-  const resetBtn = document.getElementById('correoResetBtn');
-  if(!input || !btn || !hint || !card || !link) return;
-
-  const goCorreo = ()=>{
-    const code = input.value.trim();
-    if(!code){
-      hint.textContent = 'Pegá primero el código de seguimiento.';
-      input.focus();
-      return;
-    }
-
-    const url = 'https://www.correoargentino.com.ar/formularios/oidn?numero=' + encodeURIComponent(code);
-    link.href = url;
-    card.style.display = 'block';
-
-    const win = window.open(url, '_blank', 'noopener,noreferrer');
-    if(win){
-      hint.textContent = 'Se abrió una pestaña de Correo Argentino con tu código ya cargado. Solo falta tocar «Consultar» ahí.';
-    } else {
-      hint.textContent = 'El navegador bloqueó la pestaña emergente. Tocá el botón de abajo para abrirla vos.';
-    }
-    card.scrollIntoView({behavior:'smooth', block:'start'});
-  };
-
-  const resetCorreo = ()=>{
-    card.style.display = 'none';
-    link.href = '#';
-    input.value = '';
-    hint.textContent = '';
-    input.focus();
-  };
-
-  btn.addEventListener('click', goCorreo);
-  input.addEventListener('keydown', e=>{ if(e.key==='Enter') goCorreo(); });
-  if(resetBtn) resetBtn.addEventListener('click', resetCorreo);
-}
-*/
-
 function onCartVendorChange(e){
   const newVendorId = e.target.value;
   const wrap = document.getElementById('cartItems');
@@ -2493,7 +2434,6 @@ setTimeout(hideLoadingOverlay, 4000);
     initSmartBuyer();
     initCart();
     initTrackingTool();
-    // initCorreoArgentinoTool(); // desactivado temporalmente, ver comentario arriba
     renderOrderComparison();
   }catch(err){
     console.error('Error al iniciar la página:', err);
