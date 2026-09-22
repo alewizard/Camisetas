@@ -1056,6 +1056,24 @@ const BASE_VENDORS = [
     contacts:[{label:'WhatsApp', url:'https://wa.me/8618007855115'},{label:'Catálogo', url:'https://gesitu.x.yupoo.com/'}],
     prices:[p('Fan','10$','fan'), p('Adidas Gamer','13$','playerAdidas'), p('Nike Player','14$','playerNike'), p('Retro','15$','retro'), p('NBA','18$','nba'), p('Shorts','Fan 7$ / Player 11$'), p('Short Fan','7$','shortFan'), p('Short Player','11$','shortPlayer'), p('Medias adultos','3$','medias'), p('Medias niños','2$'), p('Kit Niños','12$','kitInfantil'), p('Kit Adultos','18$'), p('Estrella personalizada','1$'), p('Personalizada','3$','personalizacion'), p('Parche','1$','parche'), p('Talle 2XL/3XL/4XL','+1$')],
     shipping:[{label:'1–3 piezas',value:'5$'},{label:'4+ piezas',value:'Gratis'}]},
+  {id:'lina', name:'Li Na',
+    extraSummary:'Ver datos adicionales (España)',
+    note:'Precios Sudamérica en USD y España en €. Regalo: 1 par de medias comprando más de 5 prendas. El costo de envío varía según el país — consultar.',
+    contacts:[{label:'WhatsApp', url:'https://wa.me/8613122427487'},
+      {label:'Player 1', url:'https://qiuhuangty.x.yupoo.com/'},{label:'Player 2', url:'https://3409834285.x.yupoo.com/'},{label:'Player 3', url:'https://baocheng3f888.x.yupoo.com/categories/3517272'},
+      {label:'Fan 1', url:'https://xianghong88.x.yupoo.com/'},{label:'Fan 2', url:'https://junhaoqiumi.x.yupoo.com/'},{label:'Fan 3', url:'https://bomandi.x.yupoo.com/'},
+      {label:'Retro 1', url:'https://fuguqiuyi168.x.yupoo.com/albums'},{label:'Retro 2', url:'https://huiliyuan.x.yupoo.com/albums'},{label:'Retro 3', url:'https://xingyue88.x.yupoo.com/'},
+      {label:'Mujer 1', url:'https://bomandi.x.yupoo.com/categories/4782417'},{label:'Mujer 2', url:'https://1015790473.x.yupoo.com/albums'},
+      {label:'Kit Niños 1', url:'https://38900.x.yupoo.com/'},{label:'Kit Niños 2', url:'https://yiben-sports.x.yupoo.com/categories/4511234'},{label:'Kit Niños 3', url:'https://1807kids.x.yupoo.com/'},
+      {label:'Kit Adultos 1', url:'https://hjbq.x.yupoo.com/'},{label:'Kit Adultos 2', url:'https://xiaoyueliang0917.x.yupoo.com/albums'},
+      {label:'Shorts Fan', url:'https://879322886k.x.yupoo.com/'},{label:'Shorts 1', url:'https://baocheng3f888.x.yupoo.com/categories/5146701'},{label:'Shorts 2', url:'https://maiyuyan.x.yupoo.com/categories/4792488'},
+      {label:'Bebé', url:'https://ting8899.x.yupoo.com/categories/3729540'},{label:'Camperón', url:'https://sdfs888.x.yupoo.com/'},
+      {label:'Entrenamiento Adultos', url:'https://x.yupoo.com/photos/changjiangsports/categories/325818'},{label:'Entrenamiento Niños 1', url:'https://x.yupoo.com/photos/changjiangsports/categories/325820'},{label:'Entrenamiento Niños 2', url:'https://x.yupoo.com/photos/changjiangsports/categories/325819'},
+      {label:'Olive uniform 1', url:'https://yiyisports2016.x.yupoo.com/categories/3324832'},{label:'Olive uniform 2', url:'https://yiyisports2016.x.yupoo.com/categories/3314189'}],
+    prices:[p('Fan','11$','fan'), p('Player','15$','playerAdidas'), p('Retro','16$','retro'), p('Retro manga larga','17$'), p('Fan manga larga','12$'), p('Player manga larga','16$'), p('Short Fan','10$','shortFan'), p('Short Player','15$','shortPlayer'), p('Kit Infantil','12$','kitInfantil'), p('Kit Infantil Player','14$'), p('Kit Adultos','13$'), p('Kit Adultos Player','15$'), p('Kit Entrenamiento','23$–30$','kitEntrenamiento'), p('NBA / F1 / NFL','21$','nba'), p('Pelota','18$'), p('Parche','1$','parche'), p('Personalizada','3$','personalizacion'), p('Talle 3XL–6XL','+1$')],
+    shipping:[{label:'Envío',value:'Consultar (varía según país)'},{label:'Más de 5 prendas',value:'Regalo: 1 par de medias'}],
+    extraPrices:[{label:'España (€)', items:[p('Fan','8€'), p('Player','12€'), p('Short Fan','8€'), p('Short Player','12€'), p('Kit Infantil','12€'), p('Kit Infantil Player','14€'), p('Kit Adultos','13€'), p('Kit Adultos Player','15€'), p('Kit Entrenamiento','23€–30€'), p('Fan manga larga','9€'), p('Player manga larga','14€'), p('Retro','14€'), p('Retro manga larga','15€'), p('NBA / F1 / NFL','18€'), p('Pelota','18€'), p('Parche','1€'), p('Personalizada','2.5€'), p('Talle 3XL–6XL','+1€')]}],
+    morePrices:[{summary:'Ver datos adicionales (USA, México y Europa)', label:'USA · México · Italia · Francia · Reino Unido · Alemania · Países Bajos · Portugal (€)', items:[p('Fan','9€'), p('Player','14€'), p('Short Fan','8€'), p('Short Player','14€'), p('Kit Infantil','13€'), p('Kit Infantil Player','15€'), p('Kit Adultos','15€'), p('Kit Adultos Player','17€'), p('Kit Entrenamiento','25€–35€'), p('Fan manga larga','11€'), p('Player manga larga','15€'), p('Retro','15€'), p('Retro manga larga','16€'), p('NBA / F1 / NFL','19€'), p('Pelota','19€'), p('Parche','1€'), p('Personalizada','3€'), p('Talle 3XL–6XL','+1€')], note:'Regalo: 1 par de medias comprando más de 5 prendas. Comprando más de 10 prendas, 1 camiseta Fan gratis.'}]},
 ];
 
 /* ---------------- STATE (local to this browser only) ---------------- */
@@ -1179,12 +1197,13 @@ function renderVendorCards(){
     if(hasFreeShipping(v)) tags += `<span class="tag-free">Envío gratis disp.</span>`;
 
     let extra = '';
-    if(v.argPrices || v.argShipping || v.extraShipping){
+    if(v.argPrices || v.argShipping || v.extraShipping || v.extraPrices){
       let inner = '';
+      if(v.extraPrices) v.extraPrices.forEach(ep => { inner += `<div class="section-label">Precios ${ep.label}</div><ul class="price-list">${ep.items.map(pr => `<li><span>${pr.label}</span><span class="v">${pr.value}</span></li>`).join('')}</ul>`; });
       if(v.argPrices) inner += `<div class="section-label">Precios Argentina</div><ul class="price-list">${v.argPrices.map(pr => `<li><span>${pr.label}</span><span class="v">${pr.value}</span></li>`).join('')}</ul>`;
       if(v.argShipping) inner += `<div class="section-label">Envío Argentina</div><div class="ship-row">${v.argShipping.map(s => `<span class="ship-pill">${s.label}: ${s.value}</span>`).join('')}</div>`;
       if(v.extraShipping) inner += `<div class="section-label">Envío ${v.extraShipping.label}</div><div class="ship-row">${v.extraShipping.tiers.map(s => `<span class="ship-pill">${s.label}: ${s.value}</span>`).join('')}</div>`;
-      extra = `<details><summary>Ver datos adicionales</summary>${inner}</details>`;
+      extra = `<details><summary>${v.extraSummary||'Ver datos adicionales'}</summary>${inner}</details>`;
     }
 
     return `<div class="card">
@@ -1197,9 +1216,10 @@ function renderVendorCards(){
       </div>
       <div class="contacts">${contacts}</div>
       ${note}
-      <div><div class="section-label">Precios</div><ul class="price-list">${priceItems}</ul></div>
+      <div><div class="section-label">Precios${v.extraPrices ? ' Sudamérica (USD)' : ''}</div><ul class="price-list">${priceItems}</ul></div>
       <div><div class="section-label">Envío</div><div class="ship-row">${shipPills}</div></div>
       ${extra}
+      ${(v.morePrices||[]).map(mp => `<details><summary>${mp.summary||'Ver datos adicionales'}</summary><div class="section-label">Precios ${mp.label}</div><ul class="price-list">${mp.items.map(pr => `<li><span>${pr.label}</span><span class="v">${pr.value}</span></li>`).join('')}</ul>${mp.note ? `<div class="note" style="margin-top:8px;">${mp.note}</div>` : ''}</details>`).join('')}
       <div class="card-actions">
         <button class="mini-btn" data-shareid="${v.id}">📤 WhatsApp</button>
       </div>
